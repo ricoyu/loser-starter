@@ -1,6 +1,6 @@
 package com.loserico.cloud.autoconfig;
 
-import com.loserico.cloud.gateway.TimeBetweenRoutePredicateFactory;
+import com.loserico.cloud.gateway.predicate.TimeBetweenRoutePredicateFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
  * @version 1.0
  */
 @Configuration
-public class GatewayAutoConfiguration {
+public class GatewayPredicateAutoConfiguration {
 	
 	@Bean
 	public TimeBetweenRoutePredicateFactory timeBetweenRoutePredicateFactory() {

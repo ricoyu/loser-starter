@@ -1,3 +1,4 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.loserico.cloud.autoconfig.GatewayAutoConfiguration
+com.loserico.cloud.autoconfig.GatewayPredicateAutoConfiguration,\
+com.loserico.cloud.autoconfig.GatewayFilterAutoConfiguration  
