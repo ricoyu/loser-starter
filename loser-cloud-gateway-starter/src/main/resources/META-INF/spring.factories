@@ -1,0 +1,6 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.loserico.cloud.autoconfig.LoserGatewayPredicateAutoConfiguration,\
+com.loserico.cloud.autoconfig.LoserGatewayFilterAutoConfiguration,\
+com.loserico.cloud.autoconfig.LoserGatewayAutoConfiguration, \
+com.loserico.cloud.autoconfig.LoserExceptionAutoConfiguration  

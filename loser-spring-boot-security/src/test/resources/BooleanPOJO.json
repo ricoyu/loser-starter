@@ -1,0 +1,31 @@
+{
+  "clientId": "portal_app",
+  "scope": [
+    "read",
+    "write"
+  ],
+  "requestParameters": {
+    "code": "rYLOM7",
+    "grant_type": "authorization_code",
+    "response_type": "code",
+    "redirect_uri": "http://www.baidu.com",
+    "state": "abc",
+    "client_id": "portal_app"
+  },
+  "resourceIds": [
+    "authorize-server",
+    "api-gateway",
+    "product-service",
+    "order-service"
+  ],
+  "authorities": [],
+  "approved": true,
+  "refresh": false,
+  "redirectUri": "http://www.baidu.com",
+  "responseTypes": [
+    "code"
+  ],
+  "extensions": {},
+  "grantType": "authorization_code",
+  "refreshTokenRequest": null
+}
