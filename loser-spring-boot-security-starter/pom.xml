@@ -49,8 +49,6 @@
         <dependency>
             <groupId>com.loserico</groupId>
             <artifactId>loser-json</artifactId>
-            <version>4.7.0</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 

@@ -33,32 +33,26 @@
         <dependency>
             <groupId>com.loserico</groupId>
             <artifactId>commons-lang</artifactId>
-            <version>4.7.0</version>
         </dependency>
         <dependency>
             <groupId>com.loserico</groupId>
             <artifactId>commons-spring</artifactId>
-            <version>4.7.0</version>
         </dependency>
         <dependency>
             <groupId>com.loserico</groupId>
             <artifactId>loser-cache</artifactId>
-            <version>4.7.0</version>
         </dependency>
         <dependency>
             <groupId>com.loserico</groupId>
             <artifactId>loser-json</artifactId>
-            <version>4.7.0</version>
         </dependency>
         <dependency>
             <groupId>com.loserico</groupId>
             <artifactId>loser-codec</artifactId>
-            <version>4.7.0</version>
         </dependency>
         <dependency>
             <groupId>com.loserico</groupId>
             <artifactId>loser-networking</artifactId>
-            <version>4.7.0</version>
         </dependency>
 
     </dependencies>

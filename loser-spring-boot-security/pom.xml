@@ -33,12 +33,10 @@
         <dependency>
             <groupId>com.loserico</groupId>
             <artifactId>loser-security</artifactId>
-            <version>4.7.0</version>
         </dependency>
         <dependency>
             <groupId>com.loserico</groupId>
             <artifactId>loser-json</artifactId>
-            <version>4.7.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security.oauth</groupId>

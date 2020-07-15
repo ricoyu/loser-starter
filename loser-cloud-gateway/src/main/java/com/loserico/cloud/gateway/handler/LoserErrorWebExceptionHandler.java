@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.DefaultErrorWebExceptionHandler;
-import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
 import org.springframework.cloud.gateway.support.NotFoundException;
 import org.springframework.context.ApplicationContext;
@@ -62,7 +61,7 @@ public class LoserErrorWebExceptionHandler extends DefaultErrorWebExceptionHandl
 	
 	@Override
 	protected Mono<ServerResponse> renderErrorResponse(ServerRequest request) {
-		Map<String, Object> error = getErrorAttributes(request, ErrorAttributeOptions.defaults());
+		Map<String, Object> error = getErrorAttributes(request, true);
 		int errorStatus = getHttpStatus(error);
 		Throwable throwable = getError(request);
 		Result result = null;
