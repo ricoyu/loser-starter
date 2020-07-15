@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.loserico</groupId>
         <artifactId>loser-starter</artifactId>
-        <version>1.2</version>
+        <version>1.3</version>
     </parent>
     <artifactId>loser-cloud-gateway-starter</artifactId>
     <version>${project.parent.version}</version>

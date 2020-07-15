@@ -1,3 +1,5 @@
+基于SpringBoot 2.3.1
+
 * loser-springboot-starter
 
   Spring Boot 环境下loser相关支持功能的自动化配置. 比如properties/yml中日期时间格式转换的支持
