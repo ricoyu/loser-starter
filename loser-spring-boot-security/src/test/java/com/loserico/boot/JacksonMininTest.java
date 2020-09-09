@@ -6,7 +6,6 @@ import com.loserico.boot.mixin.JaasGrantedAuthorityMixin;
 import com.loserico.boot.mixin.OAuth2AuthenticationMixin;
 import com.loserico.boot.mixin.OAuth2RequestMixin;
 import com.loserico.boot.mixin.RememberMeAuthenticationTokenMixin;
-import com.loserico.boot.mixin.SimpleGrantedAuthorityMixin;
 import com.loserico.boot.mixin.SwitchUserGrantedAuthorityMixin;
 import com.loserico.boot.mixin.TokenRequestMixin;
 import com.loserico.boot.mixin.UnmodifiableListMixin;
@@ -23,7 +22,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.jaas.JaasGrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
@@ -48,7 +46,6 @@ public class JacksonMininTest {
 	public static void init() {
 		JacksonUtils.addMixIn(OAuth2Authentication.class, OAuth2AuthenticationMixin.class);
 		JacksonUtils.addMixIn(SwitchUserGrantedAuthority.class, SwitchUserGrantedAuthorityMixin.class);
-		JacksonUtils.addMixIn(SimpleGrantedAuthority.class, SimpleGrantedAuthorityMixin.class);
 		JacksonUtils.addMixIn(JaasGrantedAuthority.class, JaasGrantedAuthorityMixin.class);
 		JacksonUtils.addMixIn(AnonymousAuthenticationToken.class, AnonymousAuthenticationTokenMixin.class);
 		JacksonUtils.addMixIn(RememberMeAuthenticationToken.class, RememberMeAuthenticationTokenMixin.class);

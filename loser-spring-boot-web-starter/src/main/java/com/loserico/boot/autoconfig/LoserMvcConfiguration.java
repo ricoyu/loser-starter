@@ -4,13 +4,17 @@ import com.loserico.web.advice.GlobalBindingAdvice;
 import com.loserico.web.advice.RestExceptionAdvice;
 import com.loserico.web.context.support.CustomConversionServiceFactoryBean;
 import com.loserico.web.converter.GenericEnumConverter;
+import com.loserico.web.filter.HttpServletRequestRepeatedReadFilter;
+import com.loserico.web.filter.XssFilter;
 import com.loserico.web.resolver.DateArgumentResolver;
 import com.loserico.web.resolver.LocalDateArgumentResolver;
 import com.loserico.web.resolver.LocalDateTimeArgumentResolver;
 import com.loserico.web.resolver.LocalTimeArgumentResolver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.filter.OrderedCharacterEncodingFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,6 +49,7 @@ import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebA
  */
 @Configuration
 @ConditionalOnWebApplication(type = SERVLET)
+@EnableConfigurationProperties({LoserFilterProperties.class})
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Slf4j
 public class LoserMvcConfiguration implements WebMvcConfigurer {
@@ -84,19 +89,38 @@ public class LoserMvcConfiguration implements WebMvcConfigurer {
 	}
 	
 	/**
-	 * 这个是reactive环境的
+	 * 请求参数防XSS攻击
 	 *
+	 * @return XssFilter
+	 */
+	@Bean
+	public XssFilter xssFilter() {
+		return new XssFilter();
+	}
+	
+	@Bean
+	@ConditionalOnProperty(prefix = "loser.filter", value = "repeated-read")
+	public HttpServletRequestRepeatedReadFilter requestRepeatedReadFilter() {
+		return new HttpServletRequestRepeatedReadFilter();
+	}
+	
+	/**
 	 * @return
 	 */
 	@Bean
 	@ConditionalOnWebApplication(type = REACTIVE)
 	public CorsWebFilter corsFilter() {
 		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowCredentials(true); // 允许cookies跨域
-		config.addAllowedOrigin("*");// #允许向该服务器提交请求的URI，*表示全部允许，在SpringMVC中，如果设成*，会自动转成当前请求头中的Origin
-		config.addAllowedHeader("*");// #允许访问的头信息,*表示全部
-		config.setMaxAge(18000L);// 预检请求的缓存时间（秒），即在这个时间段里，对于相同的跨域请求不会再预检了
-		config.addAllowedMethod("*");// 允许提交请求的方法，*表示全部允许
+		// 允许cookies跨域
+		config.setAllowCredentials(true);
+		// 允许向该服务器提交请求的URI, *表示全部允许, 在SpringMVC中, 如果设成*, 会自动转成当前请求头中的Origin
+		config.addAllowedOrigin("*");
+		// 允许访问的头信息,*表示全部
+		config.addAllowedHeader("*");
+		// 预检请求的缓存时间(秒), 即在这个时间段里, 对于相同的跨域请求不会再预检了
+		config.setMaxAge(18000L);
+		// 允许提交请求的方法, *表示全部允许
+		config.addAllowedMethod("*");
 		
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(new PathPatternParser());
 		source.registerCorsConfiguration("/**", config);

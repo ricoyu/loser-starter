@@ -9,13 +9,12 @@ import com.loserico.common.lang.vo.Results;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-
-import static org.springframework.web.reactive.function.BodyInserters.fromValue;
 
 /**
  * 网关限流统一处理
@@ -39,7 +38,7 @@ public class GatewayBlockRequestHandler extends DefaultBlockRequestHandler {
 		// JSON result
 		return ServerResponse.status(HttpStatus.TOO_MANY_REQUESTS)
 				.contentType(MediaType.APPLICATION_JSON)
-				.body(fromValue(buildErrorResult(ex)));
+				.body(BodyInserters.fromObject(buildErrorResult(ex)));
 	}
 	
 	private boolean acceptsHtml(ServerWebExchange exchange) {
@@ -57,7 +56,7 @@ public class GatewayBlockRequestHandler extends DefaultBlockRequestHandler {
 	private Mono<ServerResponse> htmlErrorResponse(Throwable ex) {
 		return ServerResponse.status(HttpStatus.TOO_MANY_REQUESTS)
 				.contentType(MediaType.TEXT_PLAIN)
-				.bodyValue(new String(JSON.toJSONString(buildErrorResult(ex))));
+				.body(BodyInserters.fromObject(JSON.toJSONString(buildErrorResult(ex))));
 	}
 	
 	private Result buildErrorResult(Throwable ex) {

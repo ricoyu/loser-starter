@@ -62,7 +62,7 @@ public class LoserErrorWebExceptionHandler extends DefaultErrorWebExceptionHandl
 	@Override
 	protected Mono<ServerResponse> renderErrorResponse(ServerRequest request) {
 		Map<String, Object> error = getErrorAttributes(request, true);
-		int errorStatus = getHttpStatus(error);
+		int errorStatus = (int) error.get("status");
 		Throwable throwable = getError(request);
 		Result result = null;
 		if (throwable instanceof ResponseStatusException) {
@@ -80,6 +80,6 @@ public class LoserErrorWebExceptionHandler extends DefaultErrorWebExceptionHandl
 		}
 		return ServerResponse.status(errorStatus)
 				.contentType(MediaType.APPLICATION_JSON)
-				.body(BodyInserters.fromValue(result));
+				.body(BodyInserters.fromObject(result));
 	}
 }

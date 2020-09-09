@@ -31,4 +31,6 @@ public class LoserProperties {
 	 * 是否开启@PostInitialize注解支持
 	 */
 	private boolean enablePostInitialize = true;
+	
+	private String name;
 }
