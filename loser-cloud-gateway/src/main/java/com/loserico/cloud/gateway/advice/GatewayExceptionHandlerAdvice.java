@@ -5,7 +5,6 @@ import com.loserico.cloud.gateway.props.LoserGatewayExceptionProperties;
 import com.loserico.common.lang.vo.Result;
 import com.loserico.common.lang.vo.Results;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.support.NotFoundException;
 import org.springframework.http.HttpStatus;
@@ -59,10 +58,6 @@ public class GatewayExceptionHandlerAdvice {
 	@ExceptionHandler(value = {Throwable.class})
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public Result handle(Throwable e) {
-		Results.Builder builder = Results.status(SYSTEM_ERROR);
-		if (loserGatewayExceptionProperties.isDebugMsg()) {
-			builder.debugMessage(ExceptionUtils.getStackTrace(e));
-		}
-		return builder.build();
+		return Results.status(SYSTEM_ERROR).build();
 	}
 }

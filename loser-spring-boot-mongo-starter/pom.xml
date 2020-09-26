@@ -7,9 +7,9 @@
         <artifactId>loser-starter</artifactId>
         <version>1.13</version>
     </parent>
-    <artifactId>loser-spring-boot-web-starter</artifactId>
+    <artifactId>loser-spring-boot-mongo-starter</artifactId>
     <version>${project.parent.version}</version>
-    <name>Loser SpringBoot Web Starter</name>
+    <name>Loser SpringBoot MongoDB Starter</name>
 
     <properties>
         <java.version>1.8</java.version>
@@ -25,21 +25,18 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+
         <dependency>
             <groupId>com.loserico</groupId>
-            <artifactId>loser-spring-boot-starter</artifactId>
-            <version>${project.parent.version}</version>
+            <artifactId>loser-mongo</artifactId>
         </dependency>
         <dependency>
             <groupId>com.loserico</groupId>
-            <artifactId>loser-spring-boot-web</artifactId>
-            <version>${project.parent.version}</version>
+            <artifactId>loser-token-parser</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-core</artifactId>
-            <version>9.0.34</version>
-            <scope>provided</scope>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 

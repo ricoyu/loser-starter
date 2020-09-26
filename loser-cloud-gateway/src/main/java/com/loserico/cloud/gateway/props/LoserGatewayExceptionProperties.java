@@ -17,10 +17,4 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "loser.gateway.exception")
 public class LoserGatewayExceptionProperties {
 	
-	/**
-	 * 异常信息里面是否同时返回debug message(Stack trace)
-	 * 开发环境可以打开
-	 */
-	private boolean debugMsg = false;
-	
 }
