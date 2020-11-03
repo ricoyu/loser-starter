@@ -10,7 +10,7 @@
     <groupId>com.loserico</groupId>
     <artifactId>loser-starter</artifactId>
     <packaging>pom</packaging>
-    <version>1.13</version>
+    <version>1.14</version>
     <name>Loser Spring Starter Parent</name>
 
     <properties>
@@ -54,57 +54,57 @@
             <dependency>
                 <groupId>com.loserico</groupId>
                 <artifactId>commons-lang</artifactId>
-                <version>4.7.13</version>
+                <version>4.7.14</version>
             </dependency>
             <dependency>
                 <groupId>com.loserico</groupId>
                 <artifactId>commons-spring</artifactId>
-                <version>4.7.13</version>
+                <version>4.7.14</version>
             </dependency>
             <dependency>
                 <groupId>com.loserico</groupId>
                 <artifactId>loser-cache</artifactId>
-                <version>4.7.13</version>
+                <version>4.7.14</version>
             </dependency>
             <dependency>
                 <groupId>com.loserico</groupId>
                 <artifactId>loser-json</artifactId>
-                <version>4.7.13</version>
+                <version>4.7.14</version>
             </dependency>
             <dependency>
                 <groupId>com.loserico</groupId>
                 <artifactId>loser-codec</artifactId>
-                <version>4.7.13</version>
+                <version>4.7.14</version>
             </dependency>
             <dependency>
                 <groupId>com.loserico</groupId>
                 <artifactId>loser-web</artifactId>
-                <version>4.7.13</version>
+                <version>4.7.14</version>
             </dependency>
             <dependency>
                 <groupId>com.loserico</groupId>
                 <artifactId>loser-validation</artifactId>
-                <version>4.7.13</version>
+                <version>4.7.14</version>
             </dependency>
             <dependency>
                 <groupId>com.loserico</groupId>
                 <artifactId>loser-networking</artifactId>
-                <version>4.7.13</version>
+                <version>4.7.14</version>
             </dependency>
             <dependency>
                 <groupId>com.loserico</groupId>
                 <artifactId>loser-security</artifactId>
-                <version>4.7.13</version>
+                <version>4.7.14</version>
             </dependency>
             <dependency>
                 <groupId>com.loserico</groupId>
                 <artifactId>loser-mongo</artifactId>
-                <version>4.7.13</version>
+                <version>4.7.14</version>
             </dependency>
             <dependency>
                 <groupId>com.loserico</groupId>
                 <artifactId>loser-token-parser</artifactId>
-                <version>4.7.13</version>
+                <version>4.7.14</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

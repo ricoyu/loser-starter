@@ -20,10 +20,10 @@ public class LoserMongoProperties {
 	/**
 	 * Mongo Shell 脚本文件所在文件夹路径
 	 */
-	private String location;
+	private String location = "mongo-shell";
 	
 	/**
 	 * Mongo Shell 脚本文件后缀
 	 */
-	private String suffix;
+	private String suffix = "txt";
 }
