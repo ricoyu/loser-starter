@@ -25,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 public class LoserSpringCloudAutoConfig {
 	
 	@Bean
+	@LoadBalanced
 	@ConditionalOnClass({DiscoveryClient.class, RestTemplate.class})
 	public LoserRestTemplate loserRestTemplate() {
 		return new LoserRestTemplate();

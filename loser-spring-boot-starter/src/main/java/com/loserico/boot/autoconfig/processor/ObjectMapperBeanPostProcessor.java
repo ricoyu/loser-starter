@@ -40,5 +40,6 @@ public class ObjectMapperBeanPostProcessor implements SmartInitializingSingleton
 			decorator.decorate(objectMapper);
 			ReflectionUtils.setField(jacksonUtilsClass, "objectMapper", objectMapper);
 		}
+		
 	}
 }

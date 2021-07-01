@@ -14,6 +14,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
@@ -83,7 +84,7 @@ public class WebSocketFilter implements Filter {
 		String redisChannel = pathSuffix.replaceAll(BACK_SLASH, REDIS_KEY_DELIMINATER);
 		log.debug("====== channel is {} ======", redisChannel);
 		
-		String data = ServletUtils.readRequestBody();
+		String data = ServletUtils.readRequestBody((HttpServletRequest) request);
 		log.debug("====== message is {} ======", data);
 		JedisUtils.publish(redisChannel, data);
 		

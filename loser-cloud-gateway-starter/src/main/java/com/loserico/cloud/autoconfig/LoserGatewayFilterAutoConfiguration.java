@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableConfigurationProperties(LoserGatewayProperties.class)
-public class LoserGatewayFilterAutoConfiguration {
+public class    LoserGatewayFilterAutoConfiguration {
 	
 	@Bean
 	@ConditionalOnProperty(prefix = "loser.gateway", value = "time-monitor-filter-enabled", havingValue = "true", matchIfMissing = true)

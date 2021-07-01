@@ -23,7 +23,8 @@ public class LoserProperties {
 	private String timezone = "Asia/Shanghai";
 	
 	/**
-	 * 在事务方法内另起线程执行以操作, 这个操作也需要在事务内运行时可以通过开启该配置来实现
+	 * 在事务方法内另起线程去执行一个任务, 正常这个任务是不受当前事务控制的<p>
+	 * 如果想在当前事务内运行, 可以开启这个选项
 	 */
 	private boolean asyncTransaction = true;
 	

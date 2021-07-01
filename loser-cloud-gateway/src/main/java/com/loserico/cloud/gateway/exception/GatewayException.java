@@ -1,6 +1,6 @@
 package com.loserico.cloud.gateway.exception;
 
-import com.loserico.common.lang.vo.ErrorType;
+import com.loserico.common.lang.errors.ErrorType;
 import lombok.Getter;
 
 /**
@@ -22,8 +22,8 @@ public class GatewayException extends RuntimeException {
 	private String msg;
 	
 	public GatewayException(ErrorType errorType) {
-		this.code = errorType.getCode();
-		this.msg = errorType.getMsg();
+		this.code = errorType.code();
+		this.msg = errorType.message();
 	}
 	
 }

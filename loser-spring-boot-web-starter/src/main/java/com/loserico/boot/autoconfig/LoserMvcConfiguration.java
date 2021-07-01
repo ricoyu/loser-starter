@@ -1,11 +1,11 @@
 package com.loserico.boot.autoconfig;
 
+import com.loserico.common.spring.aspect.PageResultAspect;
 import com.loserico.web.advice.GlobalBindingAdvice;
 import com.loserico.web.advice.RestExceptionAdvice;
 import com.loserico.web.context.support.CustomConversionServiceFactoryBean;
 import com.loserico.web.converter.GenericEnumConverter;
 import com.loserico.web.filter.HttpServletRequestRepeatedReadFilter;
-import com.loserico.web.filter.XssFilter;
 import com.loserico.web.resolver.DateArgumentResolver;
 import com.loserico.web.resolver.LocalDateArgumentResolver;
 import com.loserico.web.resolver.LocalDateTimeArgumentResolver;
@@ -15,6 +15,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.filter.OrderedCharacterEncodingFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,7 @@ import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.util.pattern.PathPatternParser;
 
@@ -78,6 +80,15 @@ public class LoserMvcConfiguration implements WebMvcConfigurer {
 		return new RestExceptionAdvice();
 	}
 	
+	/**
+	 * 把方法参数里面的Page对象回填到方法返回值Result里面
+	 * @return
+	 */
+	@Bean
+	public PageResultAspect pageResultAspect() {
+		return new PageResultAspect();
+	}
+	
 	@Bean
 	@Primary
 	public CharacterEncodingFilter characterEncodingFilter() {
@@ -88,20 +99,12 @@ public class LoserMvcConfiguration implements WebMvcConfigurer {
 		return filter;
 	}
 	
-	/**
-	 * 请求参数防XSS攻击
-	 *
-	 * @return XssFilter
-	 */
-	@Bean
-	public XssFilter xssFilter() {
-		return new XssFilter();
-	}
-	
 	@Bean
 	@ConditionalOnProperty(prefix = "loser.filter", value = "repeated-read")
-	public HttpServletRequestRepeatedReadFilter requestRepeatedReadFilter() {
-		return new HttpServletRequestRepeatedReadFilter();
+	public FilterRegistrationBean requestRepeatedReadFilter() {
+		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+		registrationBean.setFilter(new HttpServletRequestRepeatedReadFilter());
+		return registrationBean;
 	}
 	
 	/**
@@ -146,5 +149,14 @@ public class LoserMvcConfiguration implements WebMvcConfigurer {
 		resolvers.add(new LocalDateArgumentResolver());
 		resolvers.add(new LocalDateTimeArgumentResolver());
 		resolvers.add(new LocalTimeArgumentResolver());
+	}
+	
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/**")
+				.allowedOrigins("*")
+				.allowedHeaders("*")
+				.allowedMethods("*")
+				.allowCredentials(true);
 	}
 }

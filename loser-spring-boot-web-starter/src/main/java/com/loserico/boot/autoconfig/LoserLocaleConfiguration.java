@@ -22,9 +22,9 @@ import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebA
 /**
  * 国际化文件配置默认值为
  * spring:
- * messages:
- * basename: messages
- * encoding: UTF-8
+ *   messages:
+ *     basename: messages
+ *     encoding: UTF-8
  * <p>
  * messages.properties
  * messages_en_US.properties

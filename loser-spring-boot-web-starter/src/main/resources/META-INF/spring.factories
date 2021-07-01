@@ -3,4 +3,5 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.loserico.boot.autoconfig.LoserMvcConfiguration,\
 com.loserico.boot.autoconfig.LoserThreadAutoConfiguration,\
 com.loserico.boot.autoconfig.LoserLocaleConfiguration, \
-com.loserico.boot.autoconfig.LoserWebsocketAutoConfiguration  
+com.loserico.boot.autoconfig.LoserWebsocketAutoConfiguration, \
+com.loserico.boot.autoconfig.HttpMessageConverterAutoConfiguration

@@ -1,6 +1,6 @@
 package com.loserico.boot.enums;
 
-import com.loserico.common.lang.vo.ErrorType;
+import com.loserico.common.lang.errors.ErrorType;
 import lombok.Getter;
 
 @Getter
@@ -55,5 +55,15 @@ public enum SystemError implements ErrorType {
 	private SystemError(String code, String msg) {
 		this.code = code;
 		this.msg = msg;
+	}
+	
+	@Override
+	public String code() {
+		return this.code;
+	}
+	
+	@Override
+	public String message() {
+		return this.msg;
 	}
 }
