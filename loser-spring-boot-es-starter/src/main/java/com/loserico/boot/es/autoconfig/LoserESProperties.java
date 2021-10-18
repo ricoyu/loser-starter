@@ -23,13 +23,17 @@ public class LoserESProperties {
 	private boolean init = true;
 	
 	/**
-	 * template_name,template_file形式 <br/>
+	 * 聚合时, 桶的最大数量
+	 */
+	private Integer searchMaxBuckets;
+	
+	/**
 	 * 将定义好的 Index Template 写到指定的文件里面
 	 * 文件可以从classpath下读, 也可以从文件系统下读
 	 * <ol>
-	 *     <li/>event_template,classpath:event_template.json 从classpath根目录下读
-	 *     <li/>event_template,event_template.json           从work dir下读
-	 *     <li/>event_template,/root/event_template.json     从指定目录下读
+	 *     <li/>classpath:event_template.json 从classpath根目录下读
+	 *     <li/>event_template.json           从work dir下读
+	 *     <li/>/root/event_template.json     从指定目录下读
 	 * </ol>
 	 */
 	private String[] templates;

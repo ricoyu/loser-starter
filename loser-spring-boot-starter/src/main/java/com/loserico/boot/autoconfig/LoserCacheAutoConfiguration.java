@@ -1,6 +1,7 @@
 package com.loserico.boot.autoconfig;
 
 import com.loserico.boot.annotation.processor.RedisListenerProcessor;
+import com.loserico.boot.autoconfig.properties.LoserCacheProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

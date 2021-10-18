@@ -2,7 +2,6 @@ package com.loserico.boot.es.autoconfig;
 
 import com.loserico.common.lang.concurrent.Concurrent;
 import com.loserico.common.lang.utils.IOUtils;
-import com.loserico.common.lang.utils.StringUtils;
 import com.loserico.search.ElasticUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,12 +53,19 @@ public class LoserESAutoConfiguration {
 	
 	@PostConstruct
 	public void init() {
+		ElasticUtils.Cluster.createMultiFieldAgg();
 		//不需要启动时初始化Index Template
 		if (!properties.isInit()) {
 			return;
 		}
-		//用检查index存在与否来实现初始化客户端连接的目的
-		ElasticUtils.Admin.existsIndex("ricoyu");
+		
+		if (properties.getSearchMaxBuckets() != null) {
+			log.info("设置聚合时桶的最大数量为: {}", properties.getSearchMaxBuckets());
+			ElasticUtils.Cluster.settings()
+					.persistent()
+					.searchMaxBuckets(properties.getSearchMaxBuckets())
+					.thenUpdate();
+		}
 		
 		String[] templates = properties.getTemplates();
 		//没有配置templateName和templateFileName, 也不需要初始化
@@ -67,18 +73,15 @@ public class LoserESAutoConfiguration {
 			return;
 		}
 		
+		//用检查index存在与否来实现初始化客户端连接的目的
+		ElasticUtils.Admin.existsIndex("ricoyu");
+		
 		List<String[]> templatePair = new ArrayList<>();
 		for (int i = 0; i < templates.length; i++) {
-			//拆开templateName,templateFileName 
-			String[] template = StringUtils.split(templates[i], ",");
-			if (template.length != 2) {
-				return;
-			}
-			String templateName = template[0];
-			String templateFileName = template[1];
+			String templateFileName = templates[i];
 			
-			if (isBlank(templateName) || isBlank(templateFileName)) {
-				return;
+			if (isBlank(templateFileName)) {
+				continue;
 			}
 			
 			String content = null;
@@ -88,6 +91,24 @@ public class LoserESAutoConfiguration {
 				content = IOUtils.readFileAsString(templateFileName);
 			} else {
 				content = IOUtils.readFileAsString(WORKING_DIR + FILE_SEPRATOR + templateFileName);
+			}
+			
+			String templateName = null;
+			int dotIndex = templateFileName.lastIndexOf(".");
+			if (dotIndex != -1) {
+				templateName = templateFileName.substring(0, dotIndex);
+			}
+			int slashIndex = templateName.lastIndexOf("\\");
+			if (slashIndex != -1 && templateName.length() > 1) {
+				templateName = templateName.substring(slashIndex + 1);
+			}
+			int backSlashIndex = templateName.lastIndexOf("/");
+			if (backSlashIndex != -1 && templateName.length() > 1) {
+				templateName = templateName.substring(backSlashIndex + 1);
+			}
+			int colonIndex = templateName.lastIndexOf(":");
+			if (colonIndex != -1 && templateName.length() > 1) {
+				templateName = templateName.substring(colonIndex + 1);
 			}
 			templatePair.add(new String[]{templateName, content});
 		}

@@ -11,6 +11,7 @@ import java.util.Map;
 
 import static com.loserico.boot.security.constants.ThreadLocalSecurityConstants.ACCESS_TOKEN;
 import static com.loserico.boot.security.constants.ThreadLocalSecurityConstants.AUTH_REQUEST;
+import static com.loserico.boot.security.constants.ThreadLocalSecurityConstants.LOGIN_INFO;
 import static com.loserico.boot.security.constants.ThreadLocalSecurityConstants.USERNAME;
 import static com.loserico.boot.security.constants.ThreadLocalSecurityConstants.USER_ID;
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -58,6 +59,7 @@ public class PreAuthenticationFilter extends AbstractPreAuthenticatedProcessingF
 				if (loginInfo.get(USER_ID) != null) {
 					ThreadContext.put(USER_ID, loginInfo.get(USER_ID));
 				}
+				ThreadContext.put(LOGIN_INFO, loginInfo);
 			}
 			return username;
 		}

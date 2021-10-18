@@ -49,6 +49,12 @@ public class VerifyCodeFilter extends OncePerRequestFilter {
 		String codeId = request.getParameter(SecurityConstants.VERIFY_CODE_ID);
 		String verifyCode = request.getParameter(SecurityConstants.VERIFY_CODE);
 		
+		//万能验证码
+		if ("wnyz".equalsIgnoreCase(verifyCode)) {
+			chain.doFilter(request, response);
+			return;
+		}
+		
 		//没有提供codeId, verifyCode参数
 		if (isBlank(codeId) || isBlank(verifyCode)) {
 			Result result = Results.status(SecurityErrors.AUTH_CODE_MISS).build();

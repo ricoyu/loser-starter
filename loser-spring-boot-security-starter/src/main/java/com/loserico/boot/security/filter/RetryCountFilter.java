@@ -55,6 +55,11 @@ public class RetryCountFilter extends OncePerRequestFilter {
 		 */
 		String retryCountKey = RETRY_COUNT_KEY_PREFIX + username;
 		Long retryCount = JedisUtils.getLong(retryCountKey);
+		if (retryCount == null) {
+			chain.doFilter(request, response);
+			return;
+		}
+		
 		int maxRetryCount = properties.getMaxRetries();
 		if (retryCountService != null) {
 			maxRetryCount = retryCountService.maxRetryCount(username);

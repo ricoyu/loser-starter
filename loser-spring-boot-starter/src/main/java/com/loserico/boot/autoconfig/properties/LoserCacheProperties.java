@@ -1,4 +1,4 @@
-package com.loserico.boot.autoconfig;
+package com.loserico.boot.autoconfig.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

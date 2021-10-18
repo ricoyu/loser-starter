@@ -3,16 +3,20 @@ package com.loserico.boot.security.handler;
 import com.loserico.boot.security.policy.LoginPolicyService;
 import com.loserico.boot.security.policy.LoginPolicyService.Policy;
 import com.loserico.boot.security.processor.FirstLoginProcessor;
+import com.loserico.boot.security.processor.LoginInfoProvider;
+import com.loserico.boot.security.processor.LoginSuccessPostProcessor;
 import com.loserico.boot.security.processor.SingleLoginMessageProcessor;
 import com.loserico.boot.security.service.AccessTokenService;
 import com.loserico.boot.security.service.LoginDurationService;
 import com.loserico.cache.JedisUtils;
 import com.loserico.cache.auth.AuthUtils;
+import com.loserico.common.lang.concurrent.LoserExecutors;
 import com.loserico.common.lang.context.ThreadContext;
 import com.loserico.common.lang.vo.Result;
 import com.loserico.common.lang.vo.Results;
 import com.loserico.common.spring.utils.ServletUtils;
 import com.loserico.web.utils.RestUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,6 +31,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import static com.loserico.boot.security.constants.SecurityConstants.RETRY_COUNT_KEY_PREFIX;
@@ -44,7 +49,10 @@ import static com.loserico.common.lang.errors.ErrorTypes.ALREADY_LOGIN;
  * @author Rico Yu  ricoyu520@gmail.com
  * @version 1.0
  */
+@Slf4j
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
+	
+	private static final ThreadPoolExecutor POOL = LoserExecutors.of("loser-login-pool").build();
 	
 	@Autowired
 	private AccessTokenService accessTokenService;
@@ -61,6 +69,12 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 	@Autowired(required = false)
 	private FirstLoginProcessor firstLoginProcessor;
 	
+	@Autowired(required = false)
+	private LoginInfoProvider loginInfoProvider;
+	
+	@Autowired(required = false)
+	private LoginSuccessPostProcessor loginSuccessPostProcessor;
+	
 	@SuppressWarnings({"unchecked"})
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -72,7 +86,13 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 		 * 如果该账号是首次登录, 是否需要做特殊处理? 比如强制修改密码?
 		 */
 		if (firstLoginProcessor != null) {
-			firstLoginProcessor.process(username);
+			POOL.execute(() -> {
+				try {
+					firstLoginProcessor.process(username);
+				} catch (Throwable e) {
+					log.error("", e);
+				}
+			});
 		}
 		
 		User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -137,6 +157,13 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 			loginInfo.put("ip", ip);
 		}
 		
+		if (loginInfoProvider != null) {
+			Map<String, Object> loginInfoMap = loginInfoProvider.loginInfo(username);
+			if (loginInfoMap != null) {
+				loginInfo.putAll(loginInfoMap);
+			}
+		}
+		
 		long expires = 30L;
 		if (loginDurationService != null) {
 			expires = loginDurationService.expiresInMinutes(username);
@@ -148,6 +175,14 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 		//登录成功后把之前登录失败的次数清零
 		String retryCountKey = RETRY_COUNT_KEY_PREFIX + username;
 		JedisUtils.del(retryCountKey);
+		
+		POOL.execute(() -> {
+			try {
+				loginSuccessPostProcessor.onSuccess(username);
+			} catch (Throwable e) {
+				log.error("", e);
+			}
+		});
 	}
 	
 }

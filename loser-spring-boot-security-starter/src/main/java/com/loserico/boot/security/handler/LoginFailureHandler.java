@@ -1,9 +1,11 @@
 package com.loserico.boot.security.handler;
 
 import com.loserico.boot.security.processor.AuthenticationFailMessageProcessor;
+import com.loserico.boot.security.processor.LoginFailPertimeProcessor;
 import com.loserico.boot.security.service.AccountLockDurationService;
 import com.loserico.boot.security.service.RetryCountService;
 import com.loserico.cache.JedisUtils;
+import com.loserico.common.lang.concurrent.LoserExecutors;
 import com.loserico.common.lang.context.ThreadContext;
 import com.loserico.common.lang.errors.ErrorType;
 import com.loserico.common.lang.errors.ErrorTypes;
@@ -22,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import static com.loserico.boot.security.constants.SecurityConstants.RETRY_COUNT_KEY_PREFIX;
@@ -29,6 +32,12 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Slf4j
 public class LoginFailureHandler implements AuthenticationFailureHandler {
+	
+	private static final ThreadPoolExecutor POOL = LoserExecutors.of("login-fail-pool")
+			.corePoolSize(1)
+			.maximumPoolSize(100)
+			.queueSize(1000)
+			.build();
 	
 	@Autowired(required = false)
 	private List<AuthenticationFailMessageProcessor> messageProcessors;
@@ -39,9 +48,20 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 	@Autowired(required = false)
 	private AccountLockDurationService accountLockDurationService;
 	
+	@Autowired(required = false)
+	private LoginFailPertimeProcessor loginFailPertimeProcessor;
+	
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 	                                    AuthenticationException e) throws IOException, ServletException {
+		
+		String username = ThreadContext.get(LoserSecurityConstants.SPRING_SECURITY_FORM_USERNAME_KEY);
+		
+		if (loginFailPertimeProcessor != null) {
+			POOL.execute(() -> {
+				loginFailPertimeProcessor.onLoginFail(username, e);
+			});
+		}
 		
 		boolean processed = false;
 		//如果需要在框架外对认证异常消息做处理, 可以实现AuthenticationFailMessageProcessor
@@ -71,7 +91,6 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 			RestUtils.writeJson(response, result);
 		}
 		
-		String username = ThreadContext.get(LoserSecurityConstants.SPRING_SECURITY_FORM_USERNAME_KEY);
 		if (isBlank(username)) {
 			return;
 		}
@@ -98,6 +117,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 		}
 		if (retryCount >= maxRetryCount) {
 			JedisUtils.expire(retryCountKey, lockDuration, TimeUnit.MILLISECONDS);
+			JedisUtils.publish(RETRY_COUNT_KEY_PREFIX + "channel", username);
 		}
 	}
 	

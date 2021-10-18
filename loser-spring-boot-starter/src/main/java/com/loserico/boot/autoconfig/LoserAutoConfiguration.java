@@ -1,6 +1,8 @@
 package com.loserico.boot.autoconfig;
 
 import com.loserico.boot.autoconfig.processor.ObjectMapperBeanPostProcessor;
+import com.loserico.boot.autoconfig.properties.LoserJacksonProperties;
+import com.loserico.boot.autoconfig.properties.LoserProperties;
 import com.loserico.common.lang.context.ApplicationContextHolder;
 import com.loserico.common.spring.annotation.processor.PostInitializeGroupOrderedBeanProcessor;
 import com.loserico.common.spring.transaction.TransactionEvents;
@@ -25,7 +27,7 @@ import java.util.TimeZone;
  * @author Rico Yu ricoyu520@gmail.com
  * @version 1.0
  */
-@EnableConfigurationProperties({LoserProperties.class})
+@EnableConfigurationProperties({LoserProperties.class, LoserJacksonProperties.class})
 @Configuration
 @Slf4j
 public class LoserAutoConfiguration {
