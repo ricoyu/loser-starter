@@ -37,7 +37,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <!--引入springcloud的版本-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
