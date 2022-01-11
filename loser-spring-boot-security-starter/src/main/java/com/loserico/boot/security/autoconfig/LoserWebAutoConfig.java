@@ -1,6 +1,5 @@
 package com.loserico.boot.security.autoconfig;
 
-import com.loserico.boot.security.intercepter.RateLimitIntercepter;
 import com.loserico.boot.security.intercepter.TokenBasedAntiDupSubmitIntercepter;
 import com.loserico.boot.security.props.LoserSecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +27,6 @@ public class LoserWebAutoConfig implements WebMvcConfigurer {
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		if (properties.isRateLimit()) {
-			registry.addInterceptor(new RateLimitIntercepter()); //实现应用限流
-		}
 		if (properties.isAntiDuplicateSubmit()) {
 			registry.addInterceptor(new TokenBasedAntiDupSubmitIntercepter()); //实现防止重复提交
 		}

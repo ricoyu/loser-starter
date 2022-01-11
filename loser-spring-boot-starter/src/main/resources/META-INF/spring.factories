@@ -1,5 +1,5 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.loserico.boot.autoconfig.LoserConverterAutoConfiguration,\
-com.loserico.boot.autoconfig.LoserAutoConfiguration, \
-com.loserico.boot.autoconfig.LoserCacheAutoConfiguration
+com.loserico.boot.web.autoconfig.LoserConverterAutoConfiguration,\
+com.loserico.boot.web.autoconfig.LoserAutoConfiguration, \
+com.loserico.boot.web.autoconfig.LoserCacheAutoConfiguration

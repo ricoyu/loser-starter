@@ -13,6 +13,7 @@ import com.loserico.security.vo.AuthRequest;
 import com.loserico.web.utils.RestUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -36,7 +37,6 @@ import static com.loserico.common.lang.errors.ErrorTypes.TIMESTAMP_MISMATCH;
 import static com.loserico.common.lang.errors.ErrorTypes.TIMESTAMP_MISSING;
 import static com.loserico.common.lang.errors.ErrorTypes.TOKEN_INVALID;
 import static com.loserico.common.lang.errors.ErrorTypes.TOKEN_MISSING;
-import static org.apache.commons.lang3.StringUtils.endsWithIgnoreCase;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -69,7 +69,8 @@ public class TokenDecryptProcessingFilter extends OncePerRequestFilter {
 		//如果在白名单里的URI就不要拦截
 		Set<String> whiteList = anonymousUrls();
 		for (String ignoreUri : whiteList) {
-			if (endsWithIgnoreCase(uri, ignoreUri)) {
+			AntPathRequestMatcher matcher = new AntPathRequestMatcher(ignoreUri, request.getMethod());
+			if (matcher.matches(request)) {
 				chain.doFilter(request, response);
 				return;
 			}

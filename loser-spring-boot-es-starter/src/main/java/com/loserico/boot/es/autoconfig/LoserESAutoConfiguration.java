@@ -85,12 +85,26 @@ public class LoserESAutoConfiguration {
 			}
 			
 			String content = null;
+			//显式指定从classpath下读
 			if (templateFileName.startsWith(CLASSPATH_PREFIX)) {
 				content = IOUtils.readClassPathFileAsString(templateFileName);
 			} else if (templateFileName.startsWith(FILE_SYSTEM_PREFIX) || templateFileName.contains(WINDOWS_FILE_SYSTEM)) {
+				// 显式指定从文件系统下读
 				content = IOUtils.readFileAsString(templateFileName);
 			} else {
-				content = IOUtils.readFileAsString(WORKING_DIR + FILE_SEPRATOR + templateFileName);
+				/*
+				 * 如果没有指定前缀的话, 按照优先级从高到低顺序读取
+				 * 1. 当前工作目录/config/ 下读取
+				 * 2. 当前工作目录
+				 * 3. classpath
+				 */
+				content = IOUtils.readFileAsString(WORKING_DIR + FILE_SEPRATOR + "config" + FILE_SEPRATOR + templateFileName);
+				if (isBlank(content)) {
+					content = IOUtils.readFileAsString(WORKING_DIR + FILE_SEPRATOR + templateFileName);
+					if (isBlank(content)) {
+						content = IOUtils.readClassPathFileAsString(templateFileName);
+					}
+				}
 			}
 			
 			String templateName = null;
