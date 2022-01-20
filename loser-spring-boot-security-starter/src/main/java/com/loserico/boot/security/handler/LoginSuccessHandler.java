@@ -85,14 +85,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 		/*
 		 * 如果该账号是首次登录, 是否需要做特殊处理? 比如强制修改密码?
 		 */
-		if (firstLoginProcessor != null) {
-			POOL.execute(() -> {
-				try {
-					firstLoginProcessor.process(username);
-				} catch (Throwable e) {
-					log.error("", e);
-				}
-			});
+		if (firstLoginProcessor != null) { 
+			firstLoginProcessor.process(username);
 		}
 		
 		User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
