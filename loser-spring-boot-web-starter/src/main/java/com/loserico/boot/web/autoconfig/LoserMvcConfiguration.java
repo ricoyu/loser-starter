@@ -1,5 +1,7 @@
 package com.loserico.boot.web.autoconfig;
 
+import com.loserico.boot.web.controller.IdempotentTokenController;
+import com.loserico.boot.web.intercepter.IdempotentIntercepter;
 import com.loserico.common.spring.aspect.PageResultAspect;
 import com.loserico.web.advice.GlobalBindingAdvice;
 import com.loserico.web.advice.RestExceptionAdvice;
@@ -29,6 +31,7 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.util.pattern.PathPatternParser;
 
@@ -51,7 +54,7 @@ import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebA
  */
 @Configuration
 @ConditionalOnWebApplication(type = SERVLET)
-@EnableConfigurationProperties({LoserFilterProperties.class})
+@EnableConfigurationProperties({LoserFilterProperties.class, LoserMvcProperties.class})
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Slf4j
 public class LoserMvcConfiguration implements WebMvcConfigurer {
@@ -82,6 +85,7 @@ public class LoserMvcConfiguration implements WebMvcConfigurer {
 	
 	/**
 	 * 把方法参数里面的Page对象回填到方法返回值Result里面
+	 *
 	 * @return
 	 */
 	@Bean
@@ -131,6 +135,11 @@ public class LoserMvcConfiguration implements WebMvcConfigurer {
 		return new CorsWebFilter(source);
 	}
 	
+	@Bean
+	public IdempotentTokenController idempotentTokenController() {
+		return new IdempotentTokenController();
+	}
+	
 	/**
 	 * 支持Enum类型参数绑定，可以按名字，也可以按制定的属性
 	 */
@@ -158,5 +167,12 @@ public class LoserMvcConfiguration implements WebMvcConfigurer {
 				.allowedHeaders("*")
 				.allowedMethods("*")
 				.allowCredentials(true);
+	}
+	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		//基于token的幂等性保证
+		registry.addInterceptor(new IdempotentIntercepter());
+		WebMvcConfigurer.super.addInterceptors(registry);
 	}
 }
