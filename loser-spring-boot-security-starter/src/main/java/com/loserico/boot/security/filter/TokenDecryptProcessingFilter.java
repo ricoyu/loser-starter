@@ -13,6 +13,7 @@ import com.loserico.security.vo.AuthRequest;
 import com.loserico.web.utils.RestUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static com.loserico.boot.security.constants.SecurityConstants.BEARER_TOKEN_PREFIX;
@@ -36,7 +38,7 @@ import static com.loserico.common.lang.errors.ErrorTypes.TIMESTAMP_MISMATCH;
 import static com.loserico.common.lang.errors.ErrorTypes.TIMESTAMP_MISSING;
 import static com.loserico.common.lang.errors.ErrorTypes.TOKEN_INVALID;
 import static com.loserico.common.lang.errors.ErrorTypes.TOKEN_MISSING;
-import static org.apache.commons.lang3.StringUtils.endsWithIgnoreCase;
+import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -66,10 +68,16 @@ public class TokenDecryptProcessingFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
 		String uri = ((HttpServletRequest) request).getRequestURI();
 		
-		//如果在白名单里的URI就不要拦截
+		/*
+		 * 如果在白名单里的URI就不要拦截
+		 * 注意白名单是支持/device/log/download/**这种形式的, 所以要用AntMatche, 不能用字符串匹配
+		 */
 		Set<String> whiteList = anonymousUrls();
-		for (String ignoreUri : whiteList) {
-			if (endsWithIgnoreCase(uri, ignoreUri)) {
+		List<AntPathRequestMatcher> whiteListMatchers = whiteList.stream()
+				.map((urlPatterm) -> new AntPathRequestMatcher(urlPatterm, null, false))
+				.collect(toList());
+		for (AntPathRequestMatcher matcher : whiteListMatchers) {
+			if (matcher.matches(request)) {
 				chain.doFilter(request, response);
 				return;
 			}
