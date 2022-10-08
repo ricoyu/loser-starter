@@ -29,8 +29,6 @@
         <module>loser-spring-boot-security</module>
         <module>loser-spring-boot-security-starter</module>
         <module>loser-spring-boot-webflux</module>
-        <module>loser-spring-boot-mongo-starter</module>
-        <module>loser-spring-boot-mybatis-starter</module>
         <module>loser-spring-boot-es-starter</module>
     </modules>
 

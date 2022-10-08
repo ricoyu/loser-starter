@@ -19,6 +19,5 @@ public class AntMatchTest {
 	@Test
 	public void testAntMatch() {
 		AntPathRequestMatcher matcher = new AntPathRequestMatcher("/device/log/download/**", HttpMethod.POST.name());
-		matcher.
 	}
 }
