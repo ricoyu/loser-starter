@@ -19,7 +19,7 @@ import org.springframework.security.oauth2.provider.OAuth2Request;
 public abstract class OAuth2AuthenticationMixin {
 	
 	@JsonCreator
-	public OAuth2AuthenticationMixin(@JsonProperty("storedRequest") OAuth2Request storedRequest,
+	public OAuth2AuthenticationMixin(@JsonProperty("oauth2Request") OAuth2Request storedRequest,
 	                                 @JsonProperty("userAuthentication") Authentication userAuthentication) {
 		
 	}

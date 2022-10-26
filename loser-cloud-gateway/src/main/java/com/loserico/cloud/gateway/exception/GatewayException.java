@@ -1,29 +1,18 @@
 package com.loserico.cloud.gateway.exception;
 
-import com.loserico.common.lang.errors.ErrorType;
-import lombok.Getter;
+import com.loserico.common.lang.errors.ErrorTypes;
+import lombok.Data;
 
-/**
- * 网关错误 
- * <p>
- * Copyright: Copyright (c) 2020-05-19 9:45
- * <p>
- * Company: Sexy Uncle Inc.
- * <p>
- 
- * @author Rico Yu  ricoyu520@gmail.com
- * @version 1.0
- */
-@Getter
+@Data
 public class GatewayException extends RuntimeException {
-	
-	private String code;
-	
-	private String msg;
-	
-	public GatewayException(ErrorType errorType) {
-		this.code = errorType.code();
-		this.msg = errorType.message();
-	}
-	
+
+    private String code;
+
+    private String msg;
+
+    public GatewayException(ErrorTypes errorType) {
+        this.code = errorType.code();
+        this.msg = errorType.message();
+    }
+
 }

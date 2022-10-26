@@ -15,6 +15,7 @@ import com.loserico.security.endpoint.RestAuthenticationEntryPoint;
 import com.loserico.security.filter.SecurityExceptionFilter;
 import com.loserico.security.filter.UsernamePasswordAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,6 +56,7 @@ import static com.loserico.boot.security.constants.SecurityConstants.PIC_CODE_UR
 		prePostEnabled = true,
 		securedEnabled = true,
 		jsr250Enabled = true)
+@ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
 public class LoserWebSecurityAutoConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
@@ -159,6 +161,7 @@ public class LoserWebSecurityAutoConfig extends WebSecurityConfigurerAdapter {
 	 * @return
 	 */
 	@Bean
+	@ConditionalOnMissingBean(PasswordEncoder.class)
 	public PasswordEncoder passwordEncoder() {
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	}
@@ -169,6 +172,7 @@ public class LoserWebSecurityAutoConfig extends WebSecurityConfigurerAdapter {
 	 * @return
 	 */
 	@Bean
+	@ConditionalOnMissingBean(PreAuthenticationUserDetailsService.class)
 	public PreAuthenticationUserDetailsService preAuthenticationUserDetailsService() {
 		return new PreAuthenticationUserDetailsService();
 	}

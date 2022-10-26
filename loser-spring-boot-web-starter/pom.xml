@@ -32,8 +32,8 @@
         </dependency>
         <dependency>
             <groupId>com.loserico</groupId>
-            <artifactId>loser-spring-boot-web</artifactId>
-            <version>${project.parent.version}</version>
+            <artifactId>loser-web</artifactId>
+            <version>4.12.3</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
