@@ -6,7 +6,9 @@ import com.loserico.boot.security.handler.RestAccessDeniedHandler;
 import com.loserico.boot.security.processor.AuthUtilsInitializePostProcessor;
 import com.loserico.boot.security.props.LoserSecurityProperties;
 import com.loserico.security.advice.RestSecurityExceptionAdvice;
+import com.loserico.security.advice.TokenEndpointLoggerAspect;
 import com.loserico.security.endpoint.RestAuthenticationEntryPoint;
+import com.loserico.security.listener.AuthenticationFailureListener;
 import com.loserico.security.processor.ObjectMapperBeanPostProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -50,6 +52,16 @@ public class LoserSecurityAutoConfig {
 	}
 	
 	/**
+	 * 用来打印error log的
+	 * @return
+	 */
+	@Bean
+	@ConditionalOnMissingBean(TokenEndpointLoggerAspect.class)
+	public TokenEndpointLoggerAspect tokenEndpointLoggerAspect() {
+		return new TokenEndpointLoggerAspect();
+	}
+	
+	/**
 	 * 用来设置SpringSecurity中@Secured("ROLE_custom-rule")等注解指定的角色名字是否需要加ROLE_前缀
 	 */
 	@Bean
@@ -81,6 +93,11 @@ public class LoserSecurityAutoConfig {
 	public RsaController rsaController() {
 		properties.getWhiteList().add("/public-key");
 		return new RsaController();
+	}
+	
+	@Bean
+	public AuthenticationFailureListener authenticationFailureListener() {
+		return new AuthenticationFailureListener();
 	}
 	
 }

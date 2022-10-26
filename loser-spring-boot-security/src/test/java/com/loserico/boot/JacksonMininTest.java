@@ -1,19 +1,20 @@
 package com.loserico.boot;
 
+import com.loserico.common.lang.utils.IOUtils;
+import com.loserico.json.jackson.JacksonUtils;
 import com.loserico.security.mixin.AnonymousAuthenticationTokenMixin;
 import com.loserico.security.mixin.BadCredentialsExceptionMixin;
 import com.loserico.security.mixin.JaasGrantedAuthorityMixin;
 import com.loserico.security.mixin.OAuth2AuthenticationMixin;
 import com.loserico.security.mixin.OAuth2RequestMixin;
 import com.loserico.security.mixin.RememberMeAuthenticationTokenMixin;
+import com.loserico.security.mixin.SimpleGrantedAuthorityMixIn;
 import com.loserico.security.mixin.SwitchUserGrantedAuthorityMixin;
 import com.loserico.security.mixin.TokenRequestMixin;
 import com.loserico.security.mixin.UnmodifiableListMixin;
 import com.loserico.security.mixin.UnmodifiableSetMixin;
 import com.loserico.security.mixin.UserMixin;
 import com.loserico.security.mixin.UsernamePasswordAuthenticationTokenMixin;
-import com.loserico.common.lang.utils.IOUtils;
-import com.loserico.json.jackson.JacksonUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -22,6 +23,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.jaas.JaasGrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
@@ -56,10 +58,20 @@ public class JacksonMininTest {
 		JacksonUtils.addMixIn(BadCredentialsException.class, BadCredentialsExceptionMixin.class);
 		JacksonUtils.addMixIn(TokenRequest.class, TokenRequestMixin.class);
 		JacksonUtils.addMixIn(OAuth2Request.class, OAuth2RequestMixin.class);
+		JacksonUtils.addMixIn(OAuth2Authentication.class, OAuth2AuthenticationMixin.class);
+		JacksonUtils.addMixIn(SimpleGrantedAuthority.class, SimpleGrantedAuthorityMixIn.class);
 	}
 	
 	@Test
 	public void testDeserializeOAuth2Authentication() {
+		
+		String json = IOUtils.readClassPathFileAsString("Oauth2Authentication.json");
+		OAuth2Authentication oAuth2Authentication = JacksonUtils.toObject(json, OAuth2Authentication.class);
+		System.out.println(JacksonUtils.toJson(oAuth2Authentication));
+	}
+	
+	@Test
+	public void testOauthAuthentication() {
 		String json = IOUtils.readClassPathFileAsString("oauth-authentication.json");
 		//System.out.println(json);
 		OAuth2Authentication authentication = JacksonUtils.toObject(json, OAuth2Authentication.class);

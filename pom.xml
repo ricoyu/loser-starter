@@ -30,6 +30,8 @@
         <module>loser-spring-boot-security-starter</module>
         <module>loser-spring-boot-webflux</module>
         <module>loser-spring-boot-es-starter</module>
+        <module>loser-spring-boot-oauth2 </module>
+        <module>loser-spring-boot-oauth2-starter</module>
     </modules>
 
     <dependencyManagement>
@@ -118,16 +120,16 @@
         </dependencies>
     </dependencyManagement>
     
-    <distributionManagement>
+    <!--<distributionManagement>
         <repository>
             <id>phantom-maven2</id>
             <name>phantom-maven2</name>
             <url>http://172.23.12.66:8081/repository/phantom-maven2/</url>
         </repository>
-    </distributionManagement>
+    </distributionManagement>-->
 
 
-    <repositories>
+    <!--<repositories>
         <repository>
             <id>phantom-maven2</id>
             <name>Public Repositories</name>
@@ -139,8 +141,8 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-    </repositories>
-    <pluginRepositories>
+    </repositories>-->
+    <!--<pluginRepositories>
         <pluginRepository>
             <id>phantom-maven2</id>
             <name>Public Repositories</name>
@@ -152,7 +154,7 @@
                 <enabled>true</enabled>
             </snapshots>
         </pluginRepository>
-    </pluginRepositories>
+    </pluginRepositories>-->
     
     <build>
         <plugins>

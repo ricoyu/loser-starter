@@ -70,6 +70,8 @@ public class VerifyCodeFilter extends OncePerRequestFilter {
 			return;
 		}
 		
+		//验证码用过之后删除
+		
 		chain.doFilter(request, response);
 	}
 }
