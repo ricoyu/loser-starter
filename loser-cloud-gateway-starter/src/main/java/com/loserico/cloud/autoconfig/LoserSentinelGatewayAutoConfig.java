@@ -23,7 +23,7 @@ public class LoserSentinelGatewayAutoConfig {
 	
 	@Bean
 	@Order(-1)
-	public GlobalFilter sentinelGatewayFilter() {
+	public GlobalFilter loserSentinelGatewayFilter() {
 		return new SentinelGatewayFilter();
 	}
 }

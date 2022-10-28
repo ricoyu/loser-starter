@@ -1,14 +1,14 @@
 package com.loserico.cloud.gateway.auth.filter;
 
+import com.loserico.cloud.gateway.auth.properties.GatewayAuthProperties;
 import com.loserico.cloud.gateway.exception.GatewayException;
 import com.loserico.common.lang.errors.ErrorTypes;
 import com.loserico.gateway.auth.common.TokenInfo;
-import com.loserico.gateway.auth.properties.GatewayAuthProperties;
-import com.loserico.gateway.auth.properties.GatewayProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.gateway.config.GatewayProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -34,10 +34,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
 	private PublicKey publicKey;
 	
 	@Autowired
-	private GatewayProperties gatewayProperties;
-	
-	@Autowired
-	private GatewayAuthProperties notAuthUrlProperties;
+	private GatewayAuthProperties gatewayAuthProperties;
 	private static final AntPathMatcher ANT_PATH_MATCHER = new AntPathMatcher();
 	
 	@Autowired
@@ -83,7 +80,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
 	}
 	
 	public boolean shouldSkip(String requestPath) {
-		for (String shouldSkipUrl : notAuthUrlProperties.getShouldSkipUrls()) {
+		for (String shouldSkipUrl : gatewayAuthProperties.getAuth().getShouldSkipUrls()) {
 			if (ANT_PATH_MATCHER.match(shouldSkipUrl, requestPath)) {
 				return true;
 			}
@@ -96,13 +93,13 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		headers.setBasicAuth(gatewayProperties.getClientId(), gatewayProperties.getClientSecret());
+		headers.setBasicAuth(gatewayAuthProperties.getAuth().getClientId(), gatewayAuthProperties.getAuth().getClientSecret());
 		
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("token", token);
 		
 		HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
-		ResponseEntity<TokenInfo> responseEntity = restTemplate.exchange(gatewayProperties.getCheckTokenUrl(), HttpMethod.POST, entity, TokenInfo.class);
+		ResponseEntity<TokenInfo> responseEntity = restTemplate.exchange(gatewayAuthProperties.getAuth().getCheckTokenUrl(), HttpMethod.POST, entity, TokenInfo.class);
 		log.info("Token info: ", responseEntity.getBody().toString());
 		return responseEntity.getBody();
 	}

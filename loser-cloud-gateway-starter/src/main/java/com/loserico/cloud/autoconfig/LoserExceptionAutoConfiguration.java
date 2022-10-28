@@ -2,10 +2,11 @@ package com.loserico.cloud.autoconfig;
 
 import com.loserico.cloud.gateway.advice.GatewayExceptionHandlerAdvice;
 import com.loserico.cloud.gateway.handler.LoserErrorWebExceptionHandler;
-import com.loserico.cloud.gateway.props.LoserGatewayExceptionProperties;
+import com.loserico.cloud.gateway.properties.LoserGatewayExceptionProperties;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -69,6 +70,7 @@ public class LoserExceptionAutoConfiguration {
      * @return
      */
     @Bean
+    @ConditionalOnMissingBean(name = "gatewayExceptionHandlerAdvice")
     public GatewayExceptionHandlerAdvice gatewayExceptionHandlerAdvice() {
         return new GatewayExceptionHandlerAdvice();
     }

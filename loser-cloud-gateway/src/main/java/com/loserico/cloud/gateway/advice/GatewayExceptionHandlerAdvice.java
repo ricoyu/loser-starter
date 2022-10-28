@@ -1,7 +1,7 @@
 package com.loserico.cloud.gateway.advice;
 
 import com.loserico.cloud.gateway.exception.GatewayException;
-import com.loserico.cloud.gateway.props.LoserGatewayExceptionProperties;
+import com.loserico.cloud.gateway.properties.LoserGatewayExceptionProperties;
 import com.loserico.common.lang.vo.Result;
 import com.loserico.common.lang.vo.Results;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ public class GatewayExceptionHandlerAdvice {
 	
 	@ExceptionHandler(value = {ResponseStatusException.class})
 	public Result handle(ResponseStatusException e) {
-		log.error("response status exception:{}", e.getMessage());
+		log.error("response status exception:{}", e);
 		return Results.status(GATEWAY_ERROR).build();
 	}
 	
@@ -37,7 +37,7 @@ public class GatewayExceptionHandlerAdvice {
 	@ExceptionHandler(value = {NotFoundException.class})
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public Result handle(NotFoundException e) {
-		log.error("not found exception:{}", e.getMessage());
+		log.error("not found exception:{}", e);
 		return Results.status(GATEWAY_NOT_FOUND_SERVICE).build();
 	}
 	
@@ -50,7 +50,7 @@ public class GatewayExceptionHandlerAdvice {
 	 */
 	@ExceptionHandler(value = {GatewayException.class})
 	public Result handle(GatewayException e) {
-		log.error("GatewayException:{}", e.getMessage());
+		log.error("GatewayException:{}", e);
 		return Results.status(e.getCode(), e.getMsg()).build();
 	}
 	

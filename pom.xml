@@ -22,8 +22,6 @@
         <module>loser-spring-boot-starter</module>
         <module>loser-spring-boot</module>
         <module>loser-spring-boot-web-starter</module>
-        <module>loser-spring-cloud-starter</module>
-        <module>loser-spring-cloud</module>
         <module>loser-cloud-gateway-starter</module>
         <module>loser-cloud-gateway</module>
         <module>loser-spring-boot-security</module>
@@ -116,6 +114,21 @@
                 <groupId>com.loserico</groupId>
                 <artifactId>loser-search</artifactId>
                 <version>${loser.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>0.10.8</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>0.10.8</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>0.10.8</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

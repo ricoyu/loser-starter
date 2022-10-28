@@ -2,6 +2,8 @@
 
 1. 接入方要提供Oauth2相关表, 配置好DataSource
 
+   如果要基于模块粒度做权限控制, sys_permission的Uri可以配置成 /account/** 这种形式, 具体API设计的时候, 同一模块的API收敛到同一前缀下, 这样类似/user/getUserInfo/1, /user/getUserInfo/2这种API就不需要每个ID都配一个权限, 会疯掉
+
    ```mysql
    drop database if exists oauth;
    create database oauth default character set utf8mb4 default collate utf8mb4_general_ci;
@@ -151,7 +153,7 @@
    INSERT INTO `oauth_client_details` (`client_id`, `client_secret`, `resource_ids`, `scope`, `authorized_grant_types`, `web_server_redirect_uri`, `authorities`, `access_token_validity`, `refresh_token_validity`, `additional_information`, `autoapprove`) VALUES ('gateway_app', '$2a$10$LFQWUkRE4RIWNoy7Gw3GsOKgjCis/x.sKvmvO1KJ.6WRoBDgnXcnK', 'storage-service', 'read', 'password', NULL, NULL, 1800, NULL, NULL, NULL);
    ```
 
-1. 接入方要自己配置一个Bean: UserDetailsService, 参考示例
+2. 接入方要自己配置一个Bean: UserDetailsService, 参考示例
 
    ```java
    @Slf4j
@@ -190,7 +192,7 @@
    }
    ```
 
-2. 用keytool生成key放到classpath root下
+3. 用keytool生成key放到classpath root下
 
 ```shell
 keytool -genkeypair -alias jwt -keyalg RSA -keysize 2048 -keystore D:/jwt.jks

@@ -1,9 +1,9 @@
 package com.loserico.gateway.auth.filter;
 
+import com.loserico.cloud.gateway.auth.properties.GatewayAuthProperties;
 import com.loserico.cloud.gateway.exception.GatewayException;
 import com.loserico.common.lang.errors.ErrorTypes;
 import com.loserico.gateway.auth.common.TokenInfo;
-import com.loserico.gateway.auth.properties.GatewayAuthProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -59,7 +59,7 @@ public class AuthorizationFilter implements GlobalFilter, Ordered {
 	}
 	
 	public boolean shouldSkip(String requestPath) {
-		for (String shouldSkipUrl : gatewayAuthProperties.getShouldSkipUrls()) {
+		for (String shouldSkipUrl : gatewayAuthProperties.getAuth().getShouldSkipUrls()) {
 			if (ANT_PATH_MATCHER.match(shouldSkipUrl, requestPath)) {
 				return true;
 			}

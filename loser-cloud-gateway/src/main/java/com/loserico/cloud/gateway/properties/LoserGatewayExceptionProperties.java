@@ -1,4 +1,4 @@
-package com.loserico.cloud.gateway.props;
+package com.loserico.cloud.gateway.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
