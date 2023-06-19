@@ -15,6 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.SERVLET;
 
 /**
@@ -61,7 +62,8 @@ public class HttpMessageConverterAutoConfiguration implements WebMvcConfigurer {
 		 */
 		List<MediaType> mediaTypes = new ArrayList<MediaType>();
 		mediaTypes.add(MediaType.TEXT_PLAIN);
-		StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter();
+		//构造函数必须传默认编码, 不然返回字符串带中文的湖乱码
+		StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter(UTF_8);
 		stringHttpMessageConverter.setSupportedMediaTypes(mediaTypes);
 		converters.add(0, stringHttpMessageConverter);
 	}
