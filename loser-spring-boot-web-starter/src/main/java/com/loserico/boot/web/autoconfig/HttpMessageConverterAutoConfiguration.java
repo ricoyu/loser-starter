@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.SERVLET;
@@ -36,6 +39,9 @@ public class HttpMessageConverterAutoConfiguration implements WebMvcConfigurer {
 	public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
 		MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
 		ObjectMapperDecorator decorator = new ObjectMapperDecorator();
+		/*
+		 * Controller通过一个Bean接收json数据, 对bean中的enum类型属性等的增强, 默认不支持这些类型的绑定
+		 */
 		decorator.decorate(objectMapper);
 		mappingJackson2HttpMessageConverter.setObjectMapper(objectMapper);
 		return mappingJackson2HttpMessageConverter;
@@ -43,6 +49,20 @@ public class HttpMessageConverterAutoConfiguration implements WebMvcConfigurer {
 	
 	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-		converters.add(0, mappingJackson2HttpMessageConverter());
+		List<MediaType> list = new ArrayList<MediaType>();
+		list.add(MediaType.APPLICATION_JSON_UTF8);
+		list.add(MediaType.APPLICATION_JSON);
+		MappingJackson2HttpMessageConverter messageConverter = mappingJackson2HttpMessageConverter();
+		messageConverter.setSupportedMediaTypes(list);
+		converters.add(1, messageConverter);
+		
+		/*
+		 * 添加这个是处理在返回String类型的结果时, 多了一个双引号问题
+		 */
+		List<MediaType> mediaTypes = new ArrayList<MediaType>();
+		mediaTypes.add(MediaType.TEXT_PLAIN);
+		StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter();
+		stringHttpMessageConverter.setSupportedMediaTypes(mediaTypes);
+		converters.add(0, stringHttpMessageConverter);
 	}
 }

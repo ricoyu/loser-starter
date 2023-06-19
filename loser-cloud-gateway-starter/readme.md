@@ -29,14 +29,30 @@
          is-jwt-token: true
    ```
 
-   
+   loser.gateway.auth.jwt-token=true会注册JwtAuthenticationFilter做认证, 否则注册AuthenticationFilter和AuthorizationFilter, 这三个filter是写在loser-cloud-gateway里面的
 
-   
+   **配置示例:**
 
+   ```yaml
+   loser:
+     gateway:
+       auth:
+         client-id: gateway_app
+         client-secret: MTIzNDU2
+         auth-server-name: oauth-service
+         enabled: true
+         jwt-token: true
+         should-skip-urls: /user/info
+   ```
    
-
    
-
+   
+   
+   
+   
+   
+   
+   
    
 
 

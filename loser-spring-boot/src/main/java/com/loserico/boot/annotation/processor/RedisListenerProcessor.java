@@ -65,31 +65,32 @@ public class RedisListenerProcessor implements SmartInitializingSingleton {
 									throw new RuntimeException(msg, e);
 								}
 							}, channels);
+						} else {
+							String[] channelPatterns = annotation.channelPatterns();
+							if (channelPatterns != null && channelPatterns.length > 0) {
+								JedisUtils.psubscribe((channel, message) -> {
+									//对消息进行过滤, 只有匹配正则的消息才会被消费
+									String messagePattern = annotation.messagePattern();
+									Pattern pattern = null;
+									if (isNotBlank(messagePattern)) {
+										pattern = Pattern.compile(messagePattern);
+									}
+									
+									if (pattern != null && !pattern.matcher(message).matches()) {
+										log.info("Message:[{}] does not match pattern {}, message on channel[{}], so will not be consumed", message, messagePattern, channel);
+										return;
+									}
+									try {
+										method.invoke(bean, channel, message);
+									} catch (IllegalAccessException | InvocationTargetException e) {
+										String msg = "Invoke @RedisListener annotation method failed! bean:" + bean.getClass() + " method:" + method.getName();
+										log.error(msg, e);
+										throw new RuntimeException(msg, e);
+									}
+								}, channelPatterns);
+							}
 						}
 						
-						String[] channelPatterns = annotation.channelPatterns();
-						if (channelPatterns != null && channelPatterns.length > 0) {
-							JedisUtils.psubscribe((channel, message) -> {
-								//对消息进行过滤, 只有匹配正则的消息才会被消费
-								String messagePattern = annotation.messagePattern();
-								Pattern pattern = null;
-								if (isNotBlank(messagePattern)) {
-									pattern = Pattern.compile(messagePattern);
-								}
-								
-								if (pattern != null && !pattern.matcher(message).matches()) {
-									log.info("Message:[{}] does not match pattern {}, message on channel[{}], so will not be consumed", message, messagePattern, channel);
-									return;
-								}
-								try {
-									method.invoke(bean, channel, message);
-								} catch (IllegalAccessException | InvocationTargetException e) {
-									String msg = "Invoke @RedisListener annotation method failed! bean:" + bean.getClass() + " method:" + method.getName();
-									log.error(msg, e);
-									throw new RuntimeException(msg, e);
-								}
-							}, channelPatterns);
-						}
 					});
 				});
 	}

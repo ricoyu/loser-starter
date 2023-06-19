@@ -45,6 +45,9 @@ public class AuthorizationFilter implements GlobalFilter, Ordered {
 		
 		//获取当前请求的路径
 		String reqPath = exchange.getRequest().getURI().getPath();
+		/*
+		 * tokenInfo 是AuthenticationFilter拿到token后去认证中心校验token后拿到的返回信息
+		 */
 		TokenInfo tokenInfo = exchange.getAttribute("tokenInfo");
 		
 		if (!tokenInfo.isActive()) {

@@ -2,7 +2,7 @@
 
 1. 接入方要提供Oauth2相关表, 配置好DataSource
 
-   如果要基于模块粒度做权限控制, sys_permission的Uri可以配置成 /account/** 这种形式, 具体API设计的时候, 同一模块的API收敛到同一前缀下, 这样类似/user/getUserInfo/1, /user/getUserInfo/2这种API就不需要每个ID都配一个权限, 会疯掉
+   如果要基于模块粒度做权限控制, sys_permission表的Uri可以配置成 /account/** 这种形式, 具体API设计的时候, 同一模块的API收敛到同一前缀下, 这样类似/user/getUserInfo/1, /user/getUserInfo/2这种API就不需要每个ID都配一个权限, 会疯掉
 
    ```mysql
    drop database if exists oauth;

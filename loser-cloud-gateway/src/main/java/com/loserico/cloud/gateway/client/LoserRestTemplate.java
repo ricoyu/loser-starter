@@ -1,6 +1,7 @@
 package com.loserico.cloud.gateway.client;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpMethod;
@@ -20,7 +21,8 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * 支持服务一起动就可以通过服务名调用的版本
+ * 是为了实现服务启动的时候从授权中心拉取公钥
+ * 不能用@loadBalanced注解的RestTemplate, 因为在容器启动过程中这个RestTemplate还没有准备好, 只能自己实现一个
  * <p>
  * Copyright: (C), 2022-10-27 10:00
  * <p>
@@ -30,10 +32,11 @@ import java.util.Random;
  * @author Rico Yu ricoyu520@gmail.com
  * @version 1.0
  */
-@Slf4j
 public class LoserRestTemplate extends RestTemplate {
 	
 	private DiscoveryClient discoveryClient;
+	
+	private Logger log = LoggerFactory.getLogger(LoserRestTemplate.class);
 	
 	public LoserRestTemplate(DiscoveryClient discoveryClient) {
 		this.discoveryClient = discoveryClient;

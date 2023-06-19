@@ -7,9 +7,9 @@
         <artifactId>loser-starter</artifactId>
         <version>2.6.1</version>
     </parent>
-    <artifactId>loser-spring-boot-es-starter</artifactId>
+    <artifactId>loser-spring-cloud-starter</artifactId>
     <version>${project.parent.version}</version>
-    <name>Loser Elasticsearch Starter</name>
+    <name>Loser SpringCloud Starter</name>
 
     <properties>
         <java.version>1.8</java.version>
@@ -25,26 +25,10 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
-
         <dependency>
             <groupId>com.loserico</groupId>
-            <artifactId>commons-lang</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.loserico</groupId>
-            <artifactId>loser-json</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.loserico</groupId>
-            <artifactId>loser-codec</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.loserico</groupId>
-            <artifactId>loser-networking</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.loserico</groupId>
-            <artifactId>loser-search</artifactId>
+            <artifactId>loser-spring-cloud</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 

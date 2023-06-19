@@ -1,6 +1,5 @@
 package com.loserico.boot.web.autoconfig;
 
-import com.loserico.boot.web.controller.IdempotentTokenController;
 import com.loserico.boot.web.intercepter.IdempotentIntercepter;
 import com.loserico.common.spring.aspect.PageResultAspect;
 import com.loserico.web.advice.GlobalBindingAdvice;
@@ -59,12 +58,20 @@ import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebA
 @Slf4j
 public class LoserMvcConfiguration implements WebMvcConfigurer {
 	
+	/**
+	 * 支持Controller方法参数里面日期类型的绑定
+	 * @return
+	 */
 	@Bean
 	@ConditionalOnMissingBean(GlobalBindingAdvice.class)
 	public GlobalBindingAdvice globalBindingAdvice() {
 		return new GlobalBindingAdvice();
 	}
 	
+	/**
+	 * 忘记这个CustomConversionServiceFactoryBean是干啥用的了, controller方法enum参数绑定是下面#addFormatters方法里面配置的converter是来实现的
+	 * @return
+	 */
 	@Bean
 	public CustomConversionServiceFactoryBean conversionService() {
 		CustomConversionServiceFactoryBean conversionServiceFactoryBean = new CustomConversionServiceFactoryBean();
@@ -135,13 +142,13 @@ public class LoserMvcConfiguration implements WebMvcConfigurer {
 		return new CorsWebFilter(source);
 	}
 	
-	@Bean
+/*	@Bean
 	public IdempotentTokenController idempotentTokenController() {
 		return new IdempotentTokenController();
-	}
+	}*/
 	
 	/**
-	 * 支持Enum类型参数绑定，可以按名字，也可以按制定的属性
+	 * 支持Controller方法Enum类型参数绑定，可以按名字，也可以按制定的属性
 	 */
 	@Override
 	public void addFormatters(FormatterRegistry registry) {

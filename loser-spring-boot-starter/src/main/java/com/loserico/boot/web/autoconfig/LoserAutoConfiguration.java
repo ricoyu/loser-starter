@@ -1,6 +1,5 @@
 package com.loserico.boot.web.autoconfig;
 
-import com.loserico.boot.web.autoconfig.processor.ObjectMapperBeanPostProcessor;
 import com.loserico.boot.web.autoconfig.properties.LoserJacksonProperties;
 import com.loserico.boot.web.autoconfig.properties.LoserProperties;
 import com.loserico.common.lang.context.ApplicationContextHolder;
@@ -62,8 +61,8 @@ public class LoserAutoConfiguration {
 		return beanProcessor;
 	}
 	
-	@Bean
+	/*@Bean
 	public ObjectMapperBeanPostProcessor objectMapperPostProcessor() {
 		return new ObjectMapperBeanPostProcessor();
-	}
+	}*/
 }

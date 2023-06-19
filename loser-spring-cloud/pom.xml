@@ -7,7 +7,7 @@
         <artifactId>loser-starter</artifactId>
         <version>2.6.1</version>
     </parent>
-    <artifactId>loser-cloud-gateway</artifactId>
+    <artifactId>loser-spring-cloud</artifactId>
     <version>${project.parent.version}</version>
     <name>Loser SpringCloud Gateway</name>
 
@@ -21,12 +21,32 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-parameter-flow-control</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-annotation-aspectj</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-spring-webmvc-adapter</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -34,33 +54,8 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-gateway-core</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.csp</groupId>
-            <artifactId>sentinel-spring-cloud-gateway-adapter</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webflux</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>com.loserico</groupId>
             <artifactId>loser-spring-boot</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.loserico</groupId>
-            <artifactId>loser-spring-boot-webflux</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
@@ -86,12 +81,6 @@
         <dependency>
             <groupId>com.loserico</groupId>
             <artifactId>loser-networking</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.loserico</groupId>
-            <artifactId>loser-search</artifactId>
-            <version>${loser.version}</version>
         </dependency>
         
         <dependency>
