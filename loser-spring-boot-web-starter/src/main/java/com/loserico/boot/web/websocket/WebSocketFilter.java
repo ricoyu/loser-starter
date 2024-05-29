@@ -17,6 +17,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 /**
  * 客户端要求后端Websocket服务器推送消息时, 如果是分布式部署的, 那么有可能值推送连接到某一台服务器上的websocket客户端
  * 所以需要额外处理, 使得所有websocket服务器上连接的客户端都被通知到
@@ -53,7 +55,12 @@ public class WebSocketFilter implements Filter {
 		String pathSuffix = null;
 		
 		AntPathMatcher antPathMatcher = new AntPathMatcher();
-		//如果是path正则, 直接获取path后半部分
+		/*
+		 * 如果是path正则, 直接获取path后半部分, 就是说如果pathPrefix是/ws/push/**这种形式的话, pathSuffix就是/ws/push/后面的路径
+		 * 所以在推送的时候推送的URL应该是/ws/push//X/Y/Z这种形式的, 然后channel就是X:Y:Z
+		 * 这个/X/Y/Z看业务了
+		 * 需要推送的地方加方法加注解 @RedisListener(channels = "X:Y:Z")
+		 */
 		if (antPathMatcher.isPattern(pathPrefix)) {
 			log.debug("====== {} is a regrx pattern ======", pathPrefix);
 			pathSuffix = antPathMatcher.extractPathWithinPattern(pathPrefix, path);
@@ -66,6 +73,12 @@ public class WebSocketFilter implements Filter {
 			if (pathSuffix.indexOf(BACK_SLASH) == 0) {
 				pathSuffix = pathSuffix.substring(1, pathSuffix.length());
 			}
+		}
+		
+		if (isBlank(pathSuffix)) {
+			//匹配了这个filter, 后面的filter就无需执行了, 这里就是一个endpoint
+			RestUtils.writeJson(response, Results.success().build());
+			return;
 		}
 		
 		/*

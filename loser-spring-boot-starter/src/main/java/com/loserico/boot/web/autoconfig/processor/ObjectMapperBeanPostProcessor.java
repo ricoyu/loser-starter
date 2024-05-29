@@ -51,7 +51,7 @@ public class ObjectMapperBeanPostProcessor implements SmartInitializingSingleton
 			log.info(">>>>>>JacksonUtils already initialized? then do it again<<<<<<");
 			ObjectMapperDecorator decorator = new ObjectMapperDecorator();
 			decorator.decorate(objectMapper);
-			ReflectionUtils.setField(jacksonUtilsClass, "objectMapper", objectMapper);
+			ReflectionUtils.setField("objectMapper", jacksonUtilsClass, objectMapper);
 		}
 		
 		// 配置输出JSON字段名不用双引号括起来

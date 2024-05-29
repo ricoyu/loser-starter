@@ -5,23 +5,16 @@ import com.loserico.cloud.gateway.client.LoserRestTemplate;
 import com.loserico.cloud.gateway.exception.GatewayException;
 import com.loserico.codec.Base64Utils;
 import com.loserico.common.lang.errors.ErrorTypes;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwsHeader;
-import io.jsonwebtoken.Jwt;
-import io.jsonwebtoken.Jwts;
-import lombok.extern.slf4j.Slf4j;
+import io.jsonwebtoken.*;
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.MultiValueMap;
@@ -47,9 +40,10 @@ import static org.apache.commons.lang3.StringUtils.substringAfter;
  * @author Rico Yu ricoyu520@gmail.com
  * @version 1.0
  */
-@Slf4j
 public class JwtAuthenticationFilter implements GlobalFilter, Ordered, InitializingBean {
-	
+
+	private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
 	public static final String SCHEMA = "http://";
 	private static final AntPathMatcher ANT_PATH_MATCHER = new AntPathMatcher();
 	

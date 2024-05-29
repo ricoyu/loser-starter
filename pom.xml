@@ -10,12 +10,12 @@
     <groupId>com.loserico</groupId>
     <artifactId>loser-starter</artifactId>
     <packaging>pom</packaging>
-    <version>2.6.1</version>
+    <version>2.6.2</version>
     <name>Loser Spring Starter Parent</name>
 
     <properties>
         <java.version>1.8</java.version>
-        <loser.version>4.12.6</loser.version>
+        <loser.version>4.12.10</loser.version>
     </properties>
 
     <modules>
@@ -134,21 +134,20 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    
-    <!--<distributionManagement>
+
+    <distributionManagement>
         <repository>
-            <id>phantom-maven2</id>
-            <name>phantom-maven2</name>
-            <url>http://172.23.12.66:8081/repository/phantom-maven2/</url>
+            <id>magic-store</id>
+            <name>magic-store</name>
+            <url>http://47.100.125.240:9091/repository/magic-store/</url>
         </repository>
-    </distributionManagement>-->
+    </distributionManagement>
 
-
-    <!--<repositories>
+    <repositories>
         <repository>
-            <id>phantom-maven2</id>
-            <name>Public Repositories</name>
-            <url>http://172.23.12.66:8081/repository/maven-public</url>
+            <id>magic-store</id>
+            <name>magic-store</name>
+            <url>http://47.100.125.240:9091/repository/maven-public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -156,12 +155,13 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-    </repositories>-->
-    <!--<pluginRepositories>
+    </repositories>
+
+    <pluginRepositories>
         <pluginRepository>
-            <id>phantom-maven2</id>
-            <name>Public Repositories</name>
-            <url>http://172.23.12.66:8081/repository/maven-public</url>
+            <id>magic-store</id>
+            <name>magic-store</name>
+            <url>http://47.100.125.240:9091/repository/maven-public</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -169,7 +169,7 @@
                 <enabled>true</enabled>
             </snapshots>
         </pluginRepository>
-    </pluginRepositories>-->
+    </pluginRepositories>
     
     <build>
         <plugins>

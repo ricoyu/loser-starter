@@ -26,7 +26,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 	
 	private static final ThreadPoolExecutor POOL = LoserExecutors.of("login-fail-pool")
 			.corePoolSize(1)
-			.maximumPoolSize(100)
+			.maxPoolSize(100)
 			.queueSize(1000)
 			.build();
 	

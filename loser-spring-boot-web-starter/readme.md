@@ -122,3 +122,93 @@ public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter()
 
 
 
+# 二 WebSocket支持
+
+```yaml
+loser:
+  websocket:
+    enabled: true
+    pathPrefix: /ws/push/**
+  cache:
+    enabled: true
+```
+
+客户端要求后端Websocket服务器推送消息时, 如果是分布式部署的, 那么有可能值推送连接到某一台服务器上的websocket客户端
+ * 所以需要额外处理, 使得所有websocket服务器上连接的客户端都被通知到
+
+通过自动添加WebSocketFilter来拦截特定的请求, 这个filter拦截特定的URI, 然后通过Redis发布一条消息, 消息的channel是uri的后半部分, 消息内容是request body部分
+
+**意思就是:**
+
+> 调用HTTP接口, 路径匹配http://localhost:8080/ws/push/weekend就会被这个filter拦截, 然后这个filter读取消息体, 以/ws/push/后面的路径(weekend)为channel发送Redis PUB/SUB, 分布式websocket服务端监听Redis消息, 然后把它存储的websocket session拿出来, 挨个推送一下消息
+
+
+
+# 三 国际化支持
+
+1. application.yml配置
+
+   ```yaml
+   loser:
+     locale:
+       enabled: true
+   ```
+
+2. src\main\resources下创建i18m目录
+
+   **重要:** 必须要一个messages.properties, 否则MessageSource是一个空的MessageSource对象, 里面实际没有加载国际化资源文件
+
+   **第二个重要:**
+
+   * messages.properties        放中文
+   * messages_en_US.properties  放英文
+
+   如果只有这两个文件, 在Windows系统里面切换都OK的, 但是到了Linux系统, 中文始终出不来, 经测试, 必须加另外一个
+
+   * messages_zh_CN.properties  放中文
+
+
+
+## 3.1 编码方式获取国际化消息
+
+```java
+I18N.i18nMessage("account.retry.locked", 3, 1000)
+```
+
+这个template在message.properties中
+
+```properties
+account.retry.locked=密码错误次数已达到{0}次，账户锁定{1}分钟
+```
+
+
+
+# 四 Jackson定制
+
+出现过这样一个问题: 自定义了ObjectMapper, 为其添加了自定义序列化器, 但是实测Controller输出JSON并没有走这个自定义Serializer
+
+解决:
+
+```java
+@Configuration
+@ConditionalOnWebApplication(type = SERVLET)
+public class HttpMessageConverterAutoConfiguration implements WebMvcConfigurer {
+	
+	@Autowired
+	private ObjectMapper objectMapper;
+	
+	@Bean
+	public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
+		MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
+		ObjectMapperDecorator decorator = new ObjectMapperDecorator();
+		decorator.decorate(objectMapper);
+		mappingJackson2HttpMessageConverter.setObjectMapper(objectMapper);
+		return mappingJackson2HttpMessageConverter;
+	}
+	
+	@Override
+	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+		converters.add(0, mappingJackson2HttpMessageConverter());
+	}
+}
+```

@@ -55,13 +55,15 @@ public class HttpMessageConverterAutoConfiguration implements WebMvcConfigurer {
 		list.add(MediaType.APPLICATION_JSON);
 		MappingJackson2HttpMessageConverter messageConverter = mappingJackson2HttpMessageConverter();
 		messageConverter.setSupportedMediaTypes(list);
-		converters.add(1, messageConverter);
+		converters.add(0, messageConverter);
 		
 		/*
 		 * 添加这个是处理在返回String类型的结果时, 多了一个双引号问题
 		 */
 		List<MediaType> mediaTypes = new ArrayList<MediaType>();
 		mediaTypes.add(MediaType.TEXT_PLAIN);
+		mediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
+		mediaTypes.add(MediaType.APPLICATION_JSON);
 		//构造函数必须传默认编码, 不然返回字符串带中文的湖乱码
 		StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter(UTF_8);
 		stringHttpMessageConverter.setSupportedMediaTypes(mediaTypes);

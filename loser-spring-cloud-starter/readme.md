@@ -36,7 +36,7 @@ loser.idemtotent.enabled=true
 
 # 二 Sentinel异常处理
 
-开启开关
+开启开关, 这是默认就开启的, 要关闭设为false即可
 
 ```yaml
 loser:
