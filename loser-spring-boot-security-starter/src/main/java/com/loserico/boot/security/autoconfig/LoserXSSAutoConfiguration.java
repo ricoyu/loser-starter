@@ -8,7 +8,9 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.header.writers.ContentSecurityPolicyHeaderWriter;
+import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter;
 
 /**
  * <p>
@@ -23,19 +25,21 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableConfigurationProperties({LoserXSSProperties.class})
 @ConditionalOnProperty(prefix = "loser.xss", name = "enabled", matchIfMissing = false)
-public class LoserXSSAutoConfiguration extends WebSecurityConfigurerAdapter {
-	
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.headers()
-				.xssProtection()
-				.and()
-				.contentSecurityPolicy("script-src 'self'");
+public class LoserXSSAutoConfiguration {
+
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		http.headers(headers -> {
+			headers.addHeaderWriter(new XXssProtectionHeaderWriter())
+					.addHeaderWriter(new ContentSecurityPolicyHeaderWriter("script-src 'self'"));
+		});
+		return http.build();
 	}
-	
+
 	@Bean
 	public FilterRegistrationBean<XSSFilter> xssFilter() {
 		FilterRegistrationBean<XSSFilter> filter = new FilterRegistrationBean<>();
+		filter.setFilter(new XSSFilter());
 		filter.setOrder(Integer.MIN_VALUE);
 		return filter;
 	}

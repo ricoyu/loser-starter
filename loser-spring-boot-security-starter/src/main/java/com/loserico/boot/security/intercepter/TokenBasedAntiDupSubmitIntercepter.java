@@ -9,20 +9,20 @@ import com.loserico.common.lang.vo.Results;
 import com.loserico.common.spring.utils.ServletUtils;
 import com.loserico.web.utils.CORS;
 import com.loserico.web.utils.RestUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 
 import static com.loserico.boot.security.constants.SecurityConstants.BEARER_TOKEN_PREFIX;
 import static com.loserico.boot.security.constants.SecurityConstants.REQUEST_HEADER_AUTHORIZATION;
 import static java.text.MessageFormat.format;
-import static java.util.concurrent.TimeUnit.*;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
@@ -36,7 +36,9 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  * @version 1.0
  * @on
  */
-public class TokenBasedAntiDupSubmitIntercepter extends HandlerInterceptorAdapter {
+public class TokenBasedAntiDupSubmitIntercepter implements HandlerInterceptor {
+
+	private static final Logger log = LoggerFactory.getLogger(TokenBasedAntiDupSubmitIntercepter.class);
 
 	private static final Logger logger = LoggerFactory.getLogger(TokenBasedAntiDupSubmitIntercepter.class);
 	private static final String TOKEN_ANTI_SUBMIT_KEY_TEMPLATE = "anti:dup:submit:{0}:{1}";
@@ -45,7 +47,7 @@ public class TokenBasedAntiDupSubmitIntercepter extends HandlerInterceptorAdapte
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		if (!(handler instanceof HandlerMethod)) {
-			return super.preHandle(request, response, handler);
+			return true;
 		}
 
 		HandlerMethod handlerMethod = (HandlerMethod) handler;
@@ -74,13 +76,13 @@ public class TokenBasedAntiDupSubmitIntercepter extends HandlerInterceptorAdapte
 
 		}
 
-		return super.preHandle(request, response, handler);
+		return true;
 	}
 
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-		super.postHandle(request, response, handler, modelAndView);
+
 	}
 
 	private String getToken(HttpServletRequest request) {

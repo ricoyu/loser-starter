@@ -3,12 +3,12 @@ package com.loserico.boot.es.autoconfig;
 import com.loserico.common.lang.concurrent.Concurrent;
 import com.loserico.common.lang.utils.IOUtils;
 import com.loserico.search.ElasticUtils;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 

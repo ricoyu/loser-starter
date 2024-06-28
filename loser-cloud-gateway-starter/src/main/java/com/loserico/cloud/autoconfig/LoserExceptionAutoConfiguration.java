@@ -8,8 +8,8 @@ import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.web.ResourceProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.boot.autoconfigure.web.WebProperties.Resources;
 import org.springframework.boot.autoconfigure.web.reactive.WebFluxAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.reactive.error.DefaultErrorWebExceptionHandler;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -40,27 +40,27 @@ import java.util.List;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @ConditionalOnClass(WebFluxConfigurer.class)
 @AutoConfigureBefore(WebFluxAutoConfiguration.class)
-@EnableConfigurationProperties({ServerProperties.class, ResourceProperties.class, LoserGatewayExceptionProperties.class})
+@EnableConfigurationProperties({ServerProperties.class, Resources.class, LoserGatewayExceptionProperties.class})
 public class LoserExceptionAutoConfiguration {
 	
 	private ServerProperties serverProperties;
 	
 	private ApplicationContext applicationContext;
 	
-	private ResourceProperties resourceProperties;
+	private Resources resources;
 	
 	private List<ViewResolver> viewResolvers;
 	
 	private ServerCodecConfigurer serverCodecConfigurer;
 	
 	public LoserExceptionAutoConfiguration(ServerProperties serverProperties,
-	                                       ResourceProperties resourceProperties,
+	                                       Resources resources,
 	                                       ObjectProvider<List<ViewResolver>> viewResolversProvider,
 	                                       ServerCodecConfigurer serverCodecConfigurer,
 	                                       ApplicationContext applicationContext) {
 		this.serverProperties = serverProperties;
 		this.applicationContext = applicationContext;
-		this.resourceProperties = resourceProperties;
+		this.resources = resources;
 		this.viewResolvers = viewResolversProvider.getIfAvailable(() -> Collections.emptyList());
 		this.serverCodecConfigurer = serverCodecConfigurer;
 	}
@@ -78,7 +78,7 @@ public class LoserExceptionAutoConfiguration {
 	@Bean
 	public ErrorWebExceptionHandler errorWebExceptionHandler(ErrorAttributes errorAttributes) {
 		DefaultErrorWebExceptionHandler exceptionHandler = new LoserErrorWebExceptionHandler(
-				errorAttributes, this.resourceProperties,
+				errorAttributes, this.resources,
 				this.serverProperties.getError(), this.applicationContext);
 		exceptionHandler.setViewResolvers(this.viewResolvers);
 		exceptionHandler.setMessageWriters(this.serverCodecConfigurer.getWriters());

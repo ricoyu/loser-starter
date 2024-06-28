@@ -5,14 +5,14 @@
     <parent>
         <groupId>com.loserico</groupId>
         <artifactId>loser-starter</artifactId>
-        <version>2.6.2</version>
+        <version>17.0.1</version>
     </parent>
     <artifactId>loser-spring-cloud</artifactId>
     <version>${project.parent.version}</version>
     <name>Loser SpringCloud Gateway</name>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
     </properties>
 
     <dependencies>
@@ -27,6 +27,12 @@
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-core</artifactId>
+            <version>1.8.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-spring-webmvc-6x-adapter</artifactId>
+            <version>1.8.6</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.csp</groupId>
@@ -35,6 +41,7 @@
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-spring-webmvc-adapter</artifactId>
+            <version>${sentinel.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>

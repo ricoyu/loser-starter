@@ -3,10 +3,10 @@ package com.loserico.boot.security.filter;
 import com.loserico.cache.auth.AuthUtils;
 import com.loserico.common.lang.context.ThreadContext;
 import com.loserico.security.vo.AuthRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 import static com.loserico.boot.security.constants.ThreadLocalSecurityConstants.ACCESS_TOKEN;

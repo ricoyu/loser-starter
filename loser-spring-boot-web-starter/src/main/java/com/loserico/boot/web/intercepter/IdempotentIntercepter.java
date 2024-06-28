@@ -8,12 +8,11 @@ import com.loserico.common.lang.vo.Results;
 import com.loserico.common.spring.utils.ServletUtils;
 import com.loserico.web.utils.CORS;
 import com.loserico.web.utils.RestUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -28,7 +27,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  * @version 1.0
  */
 @Slf4j
-public class IdempotentIntercepter extends HandlerInterceptorAdapter {
+public class IdempotentIntercepter implements HandlerInterceptor {
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -41,7 +40,7 @@ public class IdempotentIntercepter extends HandlerInterceptorAdapter {
 		
 		//没有打@Idempotent注解的话不处理
 		if (idempotent == null) {
-			return super.preHandle(request, response, handler);
+			return true;
 		}
 		
 		String token = request.getHeader("Idempotent-Token");

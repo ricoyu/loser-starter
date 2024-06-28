@@ -11,14 +11,14 @@ import com.loserico.common.lang.errors.ErrorTypes;
 import com.loserico.common.lang.vo.Result;
 import com.loserico.common.lang.vo.Results;
 import com.loserico.json.jackson.JacksonUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,7 +78,7 @@ public class RestBlockExceptionHandler implements BlockExceptionHandler {
 		httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		JacksonUtils.writeValue(response.getWriter(), params);
 	}
-	
+
 	private static final class CORS {
 		
 		public static final String HEADER_ACCESS_CONTROL_ALLOW_ORIGIN = "Access-Control-Allow-Origin";

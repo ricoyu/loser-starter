@@ -8,13 +8,13 @@ import com.loserico.common.lang.errors.ErrorTypes;
 import com.loserico.common.lang.vo.Result;
 import com.loserico.common.lang.vo.Results;
 import com.loserico.json.jackson.JacksonUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -33,7 +33,7 @@ import static java.lang.String.join;
  * @version 1.0
  * @on
  */
-public class RateLimitIntercepter extends HandlerInterceptorAdapter {
+public class RateLimitIntercepter implements HandlerInterceptor {
 	
 	private ConcurrentMap<Class<? extends RateLimitHandler>, RateLimitHandler> handlers = new ConcurrentHashMap<>();
 	
@@ -47,7 +47,7 @@ public class RateLimitIntercepter extends HandlerInterceptorAdapter {
 		
 		//没有打@RateLimit注解的话不处理
 		if (rateLimit == null) {
-			return super.preHandle(request, response, handler);
+			return true;
 		}
 		
 		//下面是为了拼接出完整的API Path
@@ -101,7 +101,7 @@ public class RateLimitIntercepter extends HandlerInterceptorAdapter {
 			}
 		}
 		
-		return super.preHandle(request, response, handler);
+		return true;
 	}
 	
 	/**

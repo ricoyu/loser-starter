@@ -6,8 +6,9 @@ import com.loserico.common.lang.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
-import org.springframework.boot.autoconfigure.web.ResourceProperties;
+import org.springframework.boot.autoconfigure.web.WebProperties.Resources;
 import org.springframework.boot.autoconfigure.web.reactive.error.DefaultErrorWebExceptionHandler;
+import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
 import org.springframework.cloud.gateway.support.NotFoundException;
 import org.springframework.context.ApplicationContext;
@@ -45,13 +46,13 @@ public class LoserErrorWebExceptionHandler extends DefaultErrorWebExceptionHandl
 	 * Create a new {@code DefaultErrorWebExceptionHandler} instance.
 	 *
 	 * @param errorAttributes    the error attributes
-	 * @param resourceProperties the resources configuration properties
+	 * @param properties the resources configuration properties
 	 * @param errorProperties    the error configuration properties
 	 * @param applicationContext the current application context
 	 */
-	public LoserErrorWebExceptionHandler(ErrorAttributes errorAttributes, ResourceProperties resourceProperties,
+	public LoserErrorWebExceptionHandler(ErrorAttributes errorAttributes, Resources properties,
 	                                     ErrorProperties errorProperties, ApplicationContext applicationContext) {
-		super(errorAttributes, resourceProperties, errorProperties, applicationContext);
+		super(errorAttributes, properties, errorProperties, applicationContext);
 	}
 	
 	@Override
@@ -61,7 +62,7 @@ public class LoserErrorWebExceptionHandler extends DefaultErrorWebExceptionHandl
 	
 	@Override
 	protected Mono<ServerResponse> renderErrorResponse(ServerRequest request) {
-		Map<String, Object> error = getErrorAttributes(request, true);
+		Map<String, Object> error = getErrorAttributes(request, ErrorAttributeOptions.defaults());
 		int errorStatus = (int) error.get("status");
 		Throwable throwable = getError(request);
 		Result result = null;

@@ -5,17 +5,20 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.2.RELEASE</version>
+        <version>3.2.4</version>
     </parent>
     <groupId>com.loserico</groupId>
     <artifactId>loser-starter</artifactId>
     <packaging>pom</packaging>
-    <version>2.6.2</version>
+    <version>17.0.1</version>
     <name>Loser Spring Starter Parent</name>
 
     <properties>
-        <java.version>1.8</java.version>
-        <loser.version>4.12.10</loser.version>
+        <java.version>17</java.version>
+        <loser.version>17.0.1</loser.version>
+        <sentinel.version>1.8.6</sentinel.version>
+        <!--<gateway.version>4.1.2</gateway.version>-->
+        <gateway.version>2.2.10.RELEASE</gateway.version>
     </properties>
 
     <modules>
@@ -39,19 +42,22 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Hoxton.SR8</version>
+                <version>2023.0.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>2.2.5.RELEASE</version>
+                <version>2023.0.1.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.22</version>
+            </dependency>
             <dependency>
                 <groupId>com.loserico</groupId>
                 <artifactId>commons-lang</artifactId>
@@ -99,11 +105,6 @@
             </dependency>
             <dependency>
                 <groupId>com.loserico</groupId>
-                <artifactId>loser-mongo</artifactId>
-                <version>${loser.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.loserico</groupId>
                 <artifactId>loser-token-parser</artifactId>
                 <version>${loser.version}</version>
             </dependency>
@@ -135,42 +136,25 @@
         </dependencies>
     </dependencyManagement>
 
-    <distributionManagement>
-        <repository>
-            <id>magic-store</id>
-            <name>magic-store</name>
-            <url>http://47.100.125.240:9091/repository/magic-store/</url>
-        </repository>
-    </distributionManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.22</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>5.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+    </dependencies>
 
-    <repositories>
-        <repository>
-            <id>magic-store</id>
-            <name>magic-store</name>
-            <url>http://47.100.125.240:9091/repository/maven-public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>magic-store</id>
-            <name>magic-store</name>
-            <url>http://47.100.125.240:9091/repository/maven-public</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
-    
     <build>
         <plugins>
             <plugin>
@@ -192,27 +176,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--<plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <id>validate</id>
-                        <phase>validate</phase>
-                        <configuration>
-                            <configLocation>checkstyle.xml</configLocation>
-                            <encoding>UTF-8</encoding>
-                            <consoleOutput>true</consoleOutput>
-                            <failsOnError>true</failsOnError>
-                            <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                        </configuration>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>-->
         </plugins>
     </build>
 

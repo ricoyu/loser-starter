@@ -1,6 +1,6 @@
 package com.loserico.boot.web.handler;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 触发限流规则后, 默认会返回错误码
