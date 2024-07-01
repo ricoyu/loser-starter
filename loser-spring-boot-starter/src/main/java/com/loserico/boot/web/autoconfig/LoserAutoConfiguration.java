@@ -5,7 +5,8 @@ import com.loserico.boot.web.autoconfig.properties.LoserProperties;
 import com.loserico.common.lang.context.ApplicationContextHolder;
 import com.loserico.common.spring.annotation.processor.PostInitializeGroupOrderedBeanProcessor;
 import com.loserico.common.spring.transaction.TransactionEvents;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -28,9 +29,8 @@ import java.util.TimeZone;
  */
 @EnableConfigurationProperties({LoserProperties.class, LoserJacksonProperties.class})
 @Configuration
-@Slf4j
 public class LoserAutoConfiguration {
-	
+	private static Logger log = LoggerFactory.getLogger(LoserAutoConfiguration.class);
 	@Autowired
 	private LoserProperties loserProperties;
 	
@@ -38,7 +38,7 @@ public class LoserAutoConfiguration {
 	public void started() {
 		TimeZone.setDefault(TimeZone.getTimeZone(loserProperties.getTimezone()));
 	}
-	
+
 	@Bean
 	@ConditionalOnMissingBean(ApplicationContextHolder.class)
 	public ApplicationContextHolder applicationContextHolder() {

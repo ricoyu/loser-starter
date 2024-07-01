@@ -1,0 +1,3 @@
+com.loserico.boot.web.autoconfig.LoserConverterAutoConfiguration
+com.loserico.boot.web.autoconfig.LoserAutoConfiguration
+com.loserico.boot.web.autoconfig.LoserCacheAutoConfiguration

@@ -1,0 +1,5 @@
+com.loserico.boot.web.autoconfig.LoserMvcConfiguration
+com.loserico.boot.web.autoconfig.LoserThreadAutoConfiguration
+com.loserico.boot.web.autoconfig.LoserLocaleConfiguration
+com.loserico.boot.web.autoconfig.LoserWebsocketAutoConfiguration
+com.loserico.boot.web.autoconfig.HttpMessageConverterAutoConfiguration

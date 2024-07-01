@@ -69,4 +69,5 @@ public class HttpMessageConverterAutoConfiguration implements WebMvcConfigurer {
 		stringHttpMessageConverter.setSupportedMediaTypes(mediaTypes);
 		converters.add(0, stringHttpMessageConverter);
 	}
+
 }

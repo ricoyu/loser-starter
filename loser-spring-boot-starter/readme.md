@@ -77,3 +77,15 @@ Spring官方的@PostConstruct也可以在容器启动后自动执行指定方法
 # 四 日期转换
 
 LoserConverterAutoConfiguration配置了bean: LocalTimeConverter来实现对LocalTime的自动转换
+
+# 五 解决循环依赖
+
+Circular References Prohibited by Default in spring boot version 2.6
+
+所以现在默认不允许有循环依赖了, 所以我在这个starter的classpath下放了一个application.properties文件, 里面配置了
+
+```properties
+spring.main.allow-circular-references=true
+```
+
+使得SpringBoot应用跟以前一样, 默认可以自动解决循环依赖问题

@@ -11,7 +11,8 @@ import com.loserico.web.resolver.DateArgumentResolver;
 import com.loserico.web.resolver.LocalDateArgumentResolver;
 import com.loserico.web.resolver.LocalDateTimeArgumentResolver;
 import com.loserico.web.resolver.LocalTimeArgumentResolver;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -55,9 +56,10 @@ import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebA
 @ConditionalOnWebApplication(type = SERVLET)
 @EnableConfigurationProperties({LoserFilterProperties.class, LoserMvcProperties.class})
 @Order(Ordered.HIGHEST_PRECEDENCE)
-@Slf4j
 public class LoserMvcConfiguration implements WebMvcConfigurer {
-	
+
+	private Logger log = LoggerFactory.getLogger(LoserMvcConfiguration.class);
+
 	/**
 	 * 支持Controller方法参数里面日期类型的绑定
 	 * @return
@@ -103,10 +105,12 @@ public class LoserMvcConfiguration implements WebMvcConfigurer {
 	@Bean
 	@Primary
 	public CharacterEncodingFilter characterEncodingFilter() {
-		CharacterEncodingFilter filter = new OrderedCharacterEncodingFilter();
+		OrderedCharacterEncodingFilter filter = new OrderedCharacterEncodingFilter();
 		filter.setEncoding("UTF-8");
 		filter.setForceRequestEncoding(true);
 		filter.setForceResponseEncoding(true);
+		filter.setForceEncoding(true);
+		filter.setOrder(Ordered.HIGHEST_PRECEDENCE);
 		return filter;
 	}
 	

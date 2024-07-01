@@ -1,0 +1,3 @@
+com.loserico.boot.security.autoconfig.LoserSecurityAutoConfig
+com.loserico.boot.security.autoconfig.LoserWebSecurityAutoConfig
+com.loserico.boot.security.autoconfig.LoserWebAutoConfig

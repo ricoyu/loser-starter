@@ -212,3 +212,35 @@ public class HttpMessageConverterAutoConfiguration implements WebMvcConfigurer {
 	}
 }
 ```
+
+# 五 自动配置Encoding
+
+1. LoserMvcConfiguration会自动配置CharacterEncodingFilter, 字符编码设为UTF-8, 但是请注意, 这个CharacterEncodingFilter堆下面这种Controller是无效的, 返回的还是乱码
+
+   ```java
+   @CrossOrigin()
+   @GetMapping(value = "/hello")
+   public String hello() throws InterruptedException {
+     return "hi 三少爷";
+   }
+   ```
+
+2. 其实这种方式返回的数据是由HttpMessageConverter负责输出的, 所以要配置HttpMessageConverter的编码格式吗,这个在com.loserico.boot.web.autoconfig.HttpMessageConverterAutoConfiguration做了配置
+
+   ```java
+   /*
+    * 添加这个是处理在返回String类型的结果时, 多了一个双引号问题
+    */
+   List<MediaType> mediaTypes = new ArrayList<MediaType>();
+   mediaTypes.add(MediaType.TEXT_PLAIN);
+   mediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
+   mediaTypes.add(MediaType.APPLICATION_JSON);
+   //构造函数必须传默认编码, 不然返回字符串带中文的湖乱码
+   StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter(UTF_8);
+   stringHttpMessageConverter.setSupportedMediaTypes(mediaTypes);
+   converters.add(0, stringHttpMessageConverter);
+   ```
+
+   
+
+   

@@ -1,0 +1,2 @@
+com.loserico.boot.oauth2.autoconfig.LoserOauth2AuthorizationServerAutoConfig
+com.loserico.boot.oauth2.autoconfig.LoserOAuth2WebSecurityAutoConfig
