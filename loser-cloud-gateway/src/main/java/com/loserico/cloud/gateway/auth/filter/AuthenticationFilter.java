@@ -67,7 +67,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
 			tokenInfo = getTokenInfo(authorization);
 		} catch (Exception e) {
 			log.error("校验令牌异常:{}", e);
-			throw new GatewayException(ErrorTypes.GATEWAY_TOKEN_INVALID);
+			throw new GatewayException(ErrorTypes.TOKEN_INVALID);
 		}
 		
 		ServerHttpRequest request = exchange.getRequest().mutate().header("username", tokenInfo.getUsername()).build();

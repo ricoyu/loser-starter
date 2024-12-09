@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.loserico</groupId>
         <artifactId>loser-starter</artifactId>
-        <version>17.0.1</version>
+        <version>17.0.2</version>
     </parent>
     <artifactId>loser-spring-boot-web-starter</artifactId>
     <version>${project.parent.version}</version>
@@ -40,12 +40,18 @@
             <version>9.0.34</version>
             <scope>provided</scope>
         </dependency>-->
-        <dependency>
+        <!--<dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-spring-webmvc-adapter</artifactId>
             <version>${sentinel.version}</version>
             <scope>compile</scope>
-        </dependency>
+        </dependency>-->
+
+        <!--<dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-spring-webmvc-6x-adapter</artifactId>
+            <version>1.8.6</version>
+        </dependency>-->
     </dependencies>
 
 </project>

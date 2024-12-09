@@ -30,10 +30,12 @@ import java.util.TimeZone;
 @EnableConfigurationProperties({LoserProperties.class, LoserJacksonProperties.class})
 @Configuration
 public class LoserAutoConfiguration {
+
 	private static Logger log = LoggerFactory.getLogger(LoserAutoConfiguration.class);
+
 	@Autowired
 	private LoserProperties loserProperties;
-	
+
 	@PostConstruct
 	public void started() {
 		TimeZone.setDefault(TimeZone.getTimeZone(loserProperties.getTimezone()));
@@ -44,14 +46,14 @@ public class LoserAutoConfiguration {
 	public ApplicationContextHolder applicationContextHolder() {
 		return new ApplicationContextHolder();
 	}
-	
+
 	@Bean
 	@ConditionalOnMissingBean(TransactionEvents.class)
 	@ConditionalOnProperty(value = "loser.asyncTransaction", matchIfMissing = true, havingValue = "true")
 	public TransactionEvents transactionEvents() {
 		return new TransactionEvents();
 	}
-	
+
 	@Bean
 	@ConditionalOnMissingBean(PostInitializeGroupOrderedBeanProcessor.class)
 	@ConditionalOnProperty(value = "loser.enablePostInitialize", matchIfMissing = true, havingValue = "true")
@@ -60,9 +62,5 @@ public class LoserAutoConfiguration {
 		beanProcessor.setContextCount(1);
 		return beanProcessor;
 	}
-	
-	/*@Bean
-	public ObjectMapperBeanPostProcessor objectMapperPostProcessor() {
-		return new ObjectMapperBeanPostProcessor();
-	}*/
+
 }

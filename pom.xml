@@ -10,12 +10,12 @@
     <groupId>com.loserico</groupId>
     <artifactId>loser-starter</artifactId>
     <packaging>pom</packaging>
-    <version>17.0.1</version>
+    <version>17.0.2</version>
     <name>Loser Spring Starter Parent</name>
 
     <properties>
         <java.version>17</java.version>
-        <loser.version>17.0.1</loser.version>
+        <loser.version>17.0.2</loser.version>
         <sentinel.version>1.8.6</sentinel.version>
         <!--<gateway.version>4.1.2</gateway.version>-->
         <gateway.version>2.2.10.RELEASE</gateway.version>
