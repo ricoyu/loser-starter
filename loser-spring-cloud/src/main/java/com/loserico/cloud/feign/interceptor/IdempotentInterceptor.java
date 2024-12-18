@@ -3,7 +3,8 @@ package com.loserico.cloud.feign.interceptor;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -22,8 +23,9 @@ import java.util.UUID;
  * @author Rico Yu ricoyu520@gmail.com
  * @version 1.0
  */
-@Slf4j
 public class IdempotentInterceptor implements RequestInterceptor {
+
+	private static final Logger log = LoggerFactory.getLogger(IdempotentInterceptor.class);
 	
 	/**
 	 * 只有PUT, POST方法需要做幂等性
@@ -49,7 +51,6 @@ public class IdempotentInterceptor implements RequestInterceptor {
 		}*/
 		
 		//设置Idempotent请求头
-		//if (!template.headers().containsKey("Idempotent") && shouldIntercept) {
 		if (!template.headers().containsKey("Idempotent")) {
 			String Idempotent = UUID.randomUUID().toString().replaceAll("-", "");
 			log.info("添加Idempotent请求头: {}", Idempotent);

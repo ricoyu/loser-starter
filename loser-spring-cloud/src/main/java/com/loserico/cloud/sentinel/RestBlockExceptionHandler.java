@@ -5,11 +5,8 @@ import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.csp.sentinel.slots.block.authority.AuthorityException;
 import com.alibaba.csp.sentinel.slots.block.degrade.DegradeException;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowException;
+import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowException;
 import com.alibaba.csp.sentinel.slots.system.SystemBlockException;
-import com.loserico.cloud.enums.BlockType;
-import com.loserico.common.lang.errors.ErrorTypes;
-import com.loserico.common.lang.vo.Result;
-import com.loserico.common.lang.vo.Results;
 import com.loserico.json.jackson.JacksonUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,6 +21,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.loserico.common.lang.errors.ErrorTypes.AUTHORITY_BLOCK_EXCEPTION;
+import static com.loserico.common.lang.errors.ErrorTypes.DEGRADE_EXCEPTION;
+import static com.loserico.common.lang.errors.ErrorTypes.FLOW_EXCEPTION;
+import static com.loserico.common.lang.errors.ErrorTypes.HOT_PARAM_BLOCK_EXCEPTION;
+import static com.loserico.common.lang.errors.ErrorTypes.SYSTEM_BLOCK_EXCEPTION;
 import static com.loserico.common.lang.utils.StringUtils.joinWith;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.trim;
@@ -49,32 +51,30 @@ public class RestBlockExceptionHandler implements BlockExceptionHandler {
 	public void handle(HttpServletRequest request, HttpServletResponse response, BlockException e) throws Exception {
 		Map<String, Object> params = new HashMap<>();
 		if (e instanceof FlowException) {
-			log.warn("被限流啦!");
-			params.put("code", BlockType.FLOW.name());
-			params.put("desc", "被限流啦");
-			Result result = Results.status(ErrorTypes.TOO_MANY_REQUESTS).result(params);
+			log.warn(FLOW_EXCEPTION.message());
+			params.put("code", FLOW_EXCEPTION.code());
+			params.put("desc", FLOW_EXCEPTION.message());
 		} else if (e instanceof DegradeException) {
-			log.warn("被熔断啦!");
-			params.put("code", BlockType.DEGRADE.name());
-			params.put("desc", "被熔断啦");
-			Result result = Results.status(ErrorTypes.TOO_MANY_REQUESTS).result(params);
+			log.warn(DEGRADE_EXCEPTION.message());
+			params.put("code", DEGRADE_EXCEPTION.code());
+			params.put("desc", DEGRADE_EXCEPTION.message());
 		} else if (e instanceof AuthorityException) {
-			log.warn("被授权规则限制啦!");
-			params.put("code", BlockType.AUTH.name());
-			params.put("desc", "被授权规则限制啦");
-		//} else if (e instanceof ParamFlowException) {
-		//	log.warn("被热点参数限流啦!");
-		//	params.put("code", BlockType.HOT_PARAM.name());
-		//	params.put("desc", "被授权规则限制啦");
+			log.warn(AUTHORITY_BLOCK_EXCEPTION.message());
+			params.put("code", AUTHORITY_BLOCK_EXCEPTION.code());
+			params.put("desc", AUTHORITY_BLOCK_EXCEPTION.message());
+		} else if (e instanceof ParamFlowException) {
+			log.warn(HOT_PARAM_BLOCK_EXCEPTION.message());
+			params.put("code", HOT_PARAM_BLOCK_EXCEPTION.code());
+			params.put("desc", HOT_PARAM_BLOCK_EXCEPTION.message());
 		} else if (e instanceof SystemBlockException) {
-			log.warn("被系统规则限制啦!");
-			params.put("code", BlockType.SYSTEM.name());
-			params.put("desc", "被系统规则限制啦");
+			log.warn(SYSTEM_BLOCK_EXCEPTION.message());
+			params.put("code", SYSTEM_BLOCK_EXCEPTION.code());
+			params.put("desc", SYSTEM_BLOCK_EXCEPTION.message());
 		}
 		
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 		CORS.builder().allowAll().build(httpServletResponse);
-		httpServletResponse.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
+		httpServletResponse.setStatus(HttpStatus.OK.value());
 		httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		JacksonUtils.writeValue(response.getWriter(), params);
 	}

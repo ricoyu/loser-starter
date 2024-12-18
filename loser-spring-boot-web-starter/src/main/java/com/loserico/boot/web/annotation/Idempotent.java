@@ -7,7 +7,7 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * 接口幂等性, 基于token机制实现
+ * 接口幂等性, 基于token机制实现, 这个@Idempotent注解是用在SpringBoot Web应用上的, SpringCloud应用使用这个annotation: com.loserico.cloud.feign.annotation.Idempotent
  *
  * <ol>
  *     <li/>客户端先发一个请求去获取 token, 请求uri /idempotent-token 服务端生成一个全局唯一的ID作为token保存在redis中, 同时把这个ID返回给客户端
