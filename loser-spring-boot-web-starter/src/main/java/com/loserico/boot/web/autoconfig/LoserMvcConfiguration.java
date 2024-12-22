@@ -88,6 +88,7 @@ public class LoserMvcConfiguration implements WebMvcConfigurer {
 	 */
 	@Bean
 	@ConditionalOnMissingBean(RestExceptionAdvice.class)
+	@ConditionalOnProperty(prefix = "loser.mvc", value = "rest-exception-advice-enabled", havingValue = "true", matchIfMissing = true)
 	public RestExceptionAdvice restExceptionAdvice() {
 		return new RestExceptionAdvice();
 	}

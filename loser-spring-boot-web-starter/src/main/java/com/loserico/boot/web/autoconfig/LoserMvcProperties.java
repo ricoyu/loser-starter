@@ -21,4 +21,7 @@ public class LoserMvcProperties {
 	 * 保障接口幂等性的token有效期, 单位秒, 默认1小时
 	 */
 	private Integer idemtotentTokenTtl = 60 * 60;
+
+	private boolean restExceptionAdviceEnabled = true;
+
 }
