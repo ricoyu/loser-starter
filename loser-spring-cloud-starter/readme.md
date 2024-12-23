@@ -55,3 +55,11 @@ Sentinel注册了一个AbstractSentinelInterceptor, 这是实现了Spring MVC的
 需要分别在调用方配置Bean: RequestHeaderInterceptor
 
 被调用方配置Bean: MyRequestOriginParser
+
+application.yaml配置项
+
+```yaml
+loser.sentinel.rest-exception-enabled: true
+```
+
+控制是否要对流控异常做统一异常处理

@@ -6,6 +6,7 @@ import com.loserico.cloud.feign.interceptor.IdempotentInterceptor;
 import com.loserico.cloud.properties.IdemtotentProperties;
 import com.loserico.cloud.properties.SentinelProperties;
 import com.loserico.cloud.sentinel.RestBlockExceptionHandler;
+import com.loserico.cloud.sentinel.auth.SentinelAuthRequestOriginParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -13,8 +14,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.SERVLET;
 
@@ -66,7 +65,7 @@ public class LoserSpringCloudAutoConfiguration {
 	}
 	
 	@Bean
-	@ConditionalOnProperty(name = "loser.sentinel.enabled", havingValue = "true", matchIfMissing = true)
+	@ConditionalOnProperty(name = "loser.sentinel.rest-exception-enabled", havingValue = "true", matchIfMissing = true)
 	public RestBlockExceptionHandler restBlockExceptionHandler() {
 		return new RestBlockExceptionHandler();
 	}
@@ -76,6 +75,13 @@ public class LoserSpringCloudAutoConfiguration {
 	@ConditionalOnMissingBean(SentinelResourceAspect.class)
 	public SentinelResourceAspect sentinelResourceAspect() {
 		return new SentinelResourceAspect();
+	}
+
+	@Bean
+	@ConditionalOnMissingBean(SentinelAuthRequestOriginParser.class)
+	@ConditionalOnProperty(name = "loser.sentinel.sentinel-auth-enabled", havingValue = "true", matchIfMissing = false)
+	public SentinelAuthRequestOriginParser requestOriginParser() {
+		return new SentinelAuthRequestOriginParser();
 	}
 
 }

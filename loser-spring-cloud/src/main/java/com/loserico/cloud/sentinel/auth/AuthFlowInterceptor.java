@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
- * 支持Sentinel授权规则流控, 需要在调用方配置这个Bean
+ * 支持Sentinel授权规则流控, 需要在调用方为feign配置这个拦截器
  * <p>
  * Copyright: Copyright (c) 2023-03-22 11:11
  * <p>
@@ -18,7 +18,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  * @author Rico Yu  ricoyu520@gmail.com
  * @version 1.0
  */
-public class RequestHeaderInterceptor implements RequestInterceptor {
+public class AuthFlowInterceptor implements RequestInterceptor {
 	
 	private YamlReader yamlReader = new YamlReader("bootstrap");
 	private YamlReader yamlReader2 = new YamlReader("application");
