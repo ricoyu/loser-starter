@@ -44,6 +44,9 @@ import java.util.List;
 
 import static com.loserico.boot.security.constants.SecurityConstants.PIC_CODE_URL;
 
+/**
+ * 这里配置SpringSecurity的主要核心组件/主流程
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
@@ -61,18 +64,24 @@ public class LoserWebSecurityAutoConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf(AbstractHttpConfigurer::disable)
-				.sessionManagement(sessionManagement ->
-						sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.exceptionHandling(exceptionHandling ->
-						exceptionHandling.authenticationEntryPoint(restAuthenticationEntryPoint))
+				//Spring Security不会创建或使用HTTP会话（HttpSession）来存储任何与用户身份验证相关的信息。
+				.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(restAuthenticationEntryPoint))
 				.authorizeHttpRequests(authorizeRequests -> {
+					//可以通过配置loser.security.white-list来配置白名单, 即这些白名单中得url不需要认证就可以访问
+					List<String> whiteList = properties.getWhiteList();
 					authorizeRequests.requestMatchers(anonymousUrls()).permitAll();
 					authorizeRequests.anyRequest().authenticated();
 				});
 
+		/*
+		 * 在过滤器链上发生未处理的异常时, RestExceptionAdvice是处理不到的,
+		 * 所以通过这个Filter来统一捕获, 然后通过HandlerExceptionResolver代理给RestExceptionAdvice来处理
+		 */
 		httpSecurity.addFilterBefore(exceptionFilter(), UsernamePasswordAuthenticationFilter.class)
 				//提供SpringSecurity过滤器链对Request Body的可重复读取
 				.addFilterBefore(new HttpServletRequestRepeatedReadFilter(), WebAsyncManagerIntegrationFilter.class)
+				//这个过滤器用于解密token, 只在配置了loser.security.token-encrypted=true时才生效
 				.addFilterBefore(tokenDecryptProcessingFilter(), UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(preAuthenticationFilter(authenticationManager(httpSecurity)),
 						UsernamePasswordAuthenticationFilter.class);

@@ -55,14 +55,14 @@ public class LoserSecurityProperties {
 	 * Token是否加密处理过<p>
 	 * 客户端将请求的URI, access_toen, 客户端当前的timestamp用公钥加密, 将加密后的字符串作为access_token传递过来<p>
 	 * 先组合成这样一个字符串 uri=/saleOrder/search&access_token=dHDG13ms4868gFNfuk&timestamp=123128371823<p>
-	 * 在对这个字符串做RSA公钥加密, 加密后作为Authorization请求头传入, 同时请求的URL后面要加上timestamp=123128371823参数
+	 * 再对这个字符串做RSA公钥加密, 加密后作为Authorization请求头传入, 同时请求的URL后面要加上timestamp=123128371823参数
 	 */
-	private boolean tokenEncrypted = true;
+	private boolean tokenEncrypted = false;
 	
 	/**
 	 * 表单登录时, 传输的密码是否RSA公钥加密传输
 	 */
-	private boolean passwordEncrypted = true;
+	private boolean passwordEncrypted = false;
 	
 	/**
 	 * SpringBoot应用的ContentPath或者是Nginx那边反向代理配置的location前缀

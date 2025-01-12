@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
 
 /**
+ * 这里配置的是一些额外的丰富功能
  * <p>
  * Copyright: (C), 2020-08-14 13:55
  * <p>

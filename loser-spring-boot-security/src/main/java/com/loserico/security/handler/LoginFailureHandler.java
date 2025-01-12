@@ -1,9 +1,5 @@
-package com.loserico.boot.security.handler;
+package com.loserico.security.handler;
 
-import com.loserico.boot.security.processor.AuthenticationFailMessageProcessor;
-import com.loserico.boot.security.processor.LoginFailPertimeProcessor;
-import com.loserico.boot.security.service.AccountLockDurationService;
-import com.loserico.boot.security.service.RetryCountService;
 import com.loserico.cache.JedisUtils;
 import com.loserico.common.lang.concurrent.LoserExecutors;
 import com.loserico.common.lang.context.ThreadContext;
@@ -13,6 +9,10 @@ import com.loserico.common.lang.vo.Result;
 import com.loserico.common.lang.vo.Results;
 import com.loserico.security.constants.LoserSecurityConstants;
 import com.loserico.security.constants.SpringSecurityExceptions;
+import com.loserico.security.processor.AuthenticationFailMessageProcessor;
+import com.loserico.security.processor.LoginFailPertimeProcessor;
+import com.loserico.security.service.AccountLockDurationService;
+import com.loserico.security.service.RetryCountService;
 import com.loserico.web.utils.RestUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static com.loserico.boot.security.constants.SecurityConstants.RETRY_COUNT_KEY_PREFIX;
+import static com.loserico.security.constants.SecurityConstants.RETRY_COUNT_KEY_PREFIX;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Slf4j
@@ -96,7 +96,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 		}
 		
 		/*
-		 * 5次错误密码后冻结账号5秒
+		 * 5次错误密码后冻结账号5分钟
 		 */
 		String retryCountKey = RETRY_COUNT_KEY_PREFIX + username;
 		

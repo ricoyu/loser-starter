@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
+ * 这里目前只配置了一个防止重复提交的拦截器
  * <p>
  * Copyright: (C), 2021-05-28 17:00
  * <p>
