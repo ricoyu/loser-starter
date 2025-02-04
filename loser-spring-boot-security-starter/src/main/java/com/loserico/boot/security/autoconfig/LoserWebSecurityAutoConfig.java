@@ -201,22 +201,22 @@ public class LoserWebSecurityAutoConfig {
 	}
 
 	@Bean
-	@ConditionalOnProperty(prefix = "loser.security", name = "auth-center-enabled", havingValue = "true",
-			matchIfMissing = false)
+	//@ConditionalOnProperty(prefix = "loser.security", name = "auth-center-enabled", havingValue = "true",
+	//		matchIfMissing = false)
 	public AuthenticationSuccessHandler loginSuccessHandler() {
 		return new LoginSuccessHandler();
 	}
 
 	@Bean
-	@ConditionalOnProperty(prefix = "loser.security", name = "auth-center-enabled", havingValue = "true",
-			matchIfMissing = false)
+	//@ConditionalOnProperty(prefix = "loser.security", name = "auth-center-enabled", havingValue = "true",
+	//		matchIfMissing = false)
 	public AuthenticationFailureHandler loginFailureHandler() {
 		return new LoginFailureHandler();
 	}
 
 	@Bean
-	@ConditionalOnProperty(prefix = "loser.security", name = "auth-center-enabled", havingValue = "true",
-			matchIfMissing = false)
+	//@ConditionalOnProperty(prefix = "loser.security", name = "auth-center-enabled", havingValue = "true",
+	//		matchIfMissing = false)
 	public AccessTokenService accessTokenService() {
 		return new AccessTokenService();
 	}
